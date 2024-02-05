@@ -1,10 +1,10 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Why did the US fare so poorly during COVID-19?"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Adrian Ly
+  - Sakhil Goel
+  - Hannah Yu
+thanks: "Code and data are available at: https://github.com/hannahyu07/US-Covid-Analysis.git"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
