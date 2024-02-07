@@ -4,9 +4,9 @@
 
 ## Overview
 
-This repo features a reproduction of the Jennifer B. Nuzzo and Jorge R. Ledesma paper, [`Why Did the Best Prepared Country in the World Fare So Poorly during COVID?`](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.37.4.3), containing `R` scripts and a final `pdf` [`report`](https://github.com/hannahyu07/US-Covid-Analysis/blob/main/outputs/paper/paper.pdf). This analysis delves deep into the role of politics and public perception in shaping pandemic outcomes, building on the paper's findings about the United States' challenges during COVID-19.
+This repo features a reproduction of the Jennifer B. Nuzzo and Jorge R. Ledesma paper, [`Why Did the Best Prepared Country in the World Fare So Poorly during COVID?`](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.37.4.3), containing `R` scripts and a final `pdf` [report](https://github.com/hannahyu07/US-Covid-Analysis/blob/main/outputs/paper/paper.pdf). This analysis delves deep into the role of politics and public perception in shaping pandemic outcomes, building on the paper's findings about the United States' challenges during COVID-19.
 
-A replication using the Social Science Reproduction Platform was also produced: [`link here`]()
+A replication using the Social Science Reproduction Platform was also produced: [link here]()
 
 Link to original paper: https://www.aeaweb.org/articles?id=10.1257/jep.37.4.3
 
