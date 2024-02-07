@@ -1,8 +1,6 @@
 ## How do internal political dynamics and public trust in government impact the effectiveness of national pandemic responses, even in countries with high preparedness rankings?
 
-** Statement on LLM Usage **
-
-Aspects of the code and paper were written with the help of ChatGPT.The entire chat history is available in `inputs/llms/usage.txt`
+**Statement on LLM Usage: Aspects of the code and paper were written with the help of ChatGPT.The entire chat history is available in `inputs/llms/usage.txt`**
 
 ## Overview
 
