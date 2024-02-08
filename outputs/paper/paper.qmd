@@ -33,6 +33,9 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
+## Data Measurement
+
+
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
 ```{r}
@@ -73,36 +76,6 @@ analysis_data |>
 Talk way more about it. 
 
 
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
 # Results
 
 Our results are summarized in @tbl-modelresults.
@@ -136,17 +109,15 @@ modelsummary::modelsummary(
 ```
 
 
-
-
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Influence of political polarization on adherence to health guidelines.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+## Impact of government transparency and consistent communication on public trust.
 
-## Second discussion point
+## Role of social vulnerabilities and healthcare access disparities in pandemic impact.
 
-## Third discussion point
+## Strategies for improving real-time data collection and sharing for public health decisions.
 
 ## Weaknesses and next steps
 
