@@ -43,39 +43,55 @@ Line charts illustrating changes in life expectancy at birth by racial/ethnic gr
 These graphs can be created using R packages such as ggplot2 for plotting, sf for handling spatial data (for the GHS Index map), and readxl for reading Excel files (such as the GHS Index data). Each graph can provide different insights into the factors that influenced the United States' response to and the impact of the COVID-19 pandemic.
 
 User: 
-can you create an r script for the first suggestion
+can you create an r script for the Global Health Security (GHS) Index Map
 
 ChatGPT:
 I've created an R script based on the first suggestion from the README file, which involves constructing a map of Global Health Security (GHS) Index scores. Here's a simple version of the script that you can use:
 
 r
 Copy code
-library(ggplot2)
+# Load necessary libraries
 library(sf)
+library(ggplot2)
 library(readxl)
+library(dplyr)
+library(scales)  # For more color scale options
 
-# Load GHS Index data
-ghs_data <- read_excel("path/to/GHS_index.xlsx")
+# Read the GHS Index data
+ghs_data <- read_excel("GHS_index.xlsx")
 
-# Load shapefile for world countries
-world_map <- st_read("path/to/World_Countries__Generalized_.shp")
+# Clean up country names in the GHS Index data to match the world shapefile
+ghs_data <- ghs_data %>%
+  mutate(COUNTRY = case_when(
+    Country == "United States of America" ~ "United States",
+    Country == "Bolivia (Plurinational State of)" ~ "Bolivia",
+    # Add other necessary name changes here
+    TRUE ~ Country
+  ))
 
-# Merge the GHS data with the world map data
-world_map@data <- merge(world_map@data, ghs_data, by.x = "COUNTRY", by.y = "Country", all.x = TRUE)
+# Read the world shapefile
+world_map <- st_read("World_Countries__Generalized_.shp")
 
-# Plot the map
-ggplot(data = world_map) +
-  geom_sf(aes(fill = GHS_Index_Score), color = "white", size = 0.2) +
-  scale_fill_gradient(low = "lightblue", high = "darkblue", na.value = "grey50",
-                      name = "GHS Index Score") +
-  labs(title = "Global Health Security Index Scores",
-       subtitle = "Higher scores indicate better preparedness for pandemics") +
+# Merge the GHS Index data with the world map data using the 'COUNTRY' column
+world_ghs <- merge(world_map, ghs_data, by.x = "COUNTRY", by.y = "COUNTRY", all.x = TRUE)
+
+# Plot the GHS Index map with an improved color gradient
+ggplot(data = world_ghs) +
+  geom_sf(aes(fill = `OVERALL SCORE`), color = "white") +
+  scale_fill_distiller(palette = "Spectral", na.value = "lightgrey", 
+                       name = "GHS Index Score", direction = 1,
+                       limits = c(min(ghs_data$`OVERALL SCORE`, na.rm = TRUE), max(ghs_data$`OVERALL SCORE`, na.rm = TRUE)),
+                       labels = comma) +  # Use comma to format numbers with commas
+  labs(title = "Global Health Security Index Scores by Country") +
   theme_minimal() +
-  theme(legend.position = "bottom")
-Make sure to replace "path/to/GHS_index.xlsx" with the actual path to the GHS Index data file and "path/to/World_Countries__Generalized_.shp" with the path to the shapefile for world countries.
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5))
+
+# Save the plot to a file
+ggsave("GHS_Index_Map.png", width = 11, height = 8)
+
 
 This script will create a map where countries are colored based on their GHS Index scores, indicating their level of preparedness for pandemics. Lighter colors represent lower scores (less prepared), and darker colors represent higher scores (more prepared). Countries for which no GHS Index score is available will be colored in grey.
 
-Before running the script, ensure all required libraries (ggplot2, sf, readxl) are installed and loaded, and that the data paths are correctly set to where the files are stored on your system.
 
 

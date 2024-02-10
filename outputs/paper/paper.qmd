@@ -10,6 +10,7 @@ date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
+toc: true
 bibliography: references.bib
 ---
 
@@ -18,6 +19,7 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+#### Workspace setup ####
 library(tidyverse)
 library(sf)
 library(readxl)
@@ -28,18 +30,28 @@ library(dplyr)
 library(data.table)
 library(RColorBrewer)
 library(ggpubr)
+library(scales)
+
+#### Reading files ####
+
+ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. 
-
-The remainder of this paper is structured as follows. @sec-data....
-
-
+*This reproduction was performed after a replication on the Social Science Reproduction platform: ****[link here]()***
 
 # Data {#sec-data}
+
+
+
+## Source
+
+The datasets utilized throughout this paper was obtained from the original paper. 
+
+## Methodology
 
 ## Data Measurement
 
@@ -90,17 +102,6 @@ Talk way more about it.
 
 Our results are summarized in @tbl-modelresults.
 
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
-```
 
 ```{r}
 #| echo: false
@@ -109,13 +110,30 @@ first_model <-
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+ghs_data <- ghs_data %>%
+  mutate(COUNTRY = case_when(
+    Country == "United States of America" ~ "United States",
+    Country == "Bolivia (Plurinational State of)" ~ "Bolivia",
+    # Add other necessary name changes here
+    TRUE ~ Country
+  ))
+
+world_ghs <- merge(world_map, ghs_data, by.x = "COUNTRY", by.y = "COUNTRY", all.x = TRUE)
+
+
+ggplot(data = world_ghs) +
+  geom_sf(aes(fill = `OVERALL SCORE`), color = "white") +
+  scale_fill_distiller(palette = "Spectral", na.value = "lightgrey", 
+                       name = "GHS Index Score", direction = 1,
+                       limits = c(min(ghs_data$`OVERALL SCORE`, na.rm = TRUE), max(ghs_data$`OVERALL SCORE`, na.rm = TRUE)),
+                       labels = comma) +  # Use comma to format numbers with commas
+  labs(title = "Global Health Security Index Scores by Country") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5))
+
+# Save the plot to a file
+ggsave("GHS_Index_Map.png", width = 11, height = 8)
 ```
 
 
