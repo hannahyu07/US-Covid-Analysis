@@ -1,14 +1,22 @@
 #### Preamble ####
 # Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Author: Adrian Ly
+# Date: 9 February 2024 
+# Contact: adrian.ly@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+
 
 #### Workspace setup ####
 library(tidyverse)
+library(sf)
+library(readxl)
+library(knitr)
+library(janitor)
+library(lubridate)
+library(dplyr)
+library(data.table)
+library(RColorBrewer)
+library(ggpubr)
 
 #### Clean data ####
 raw_data <- read_csv("inputs/data/plane_data.csv")

@@ -19,7 +19,15 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(sf)
+library(readxl)
+library(knitr)
+library(janitor)
+library(lubridate)
+library(dplyr)
+library(data.table)
+library(RColorBrewer)
+library(ggpubr)
 ```
 
 
@@ -34,6 +42,8 @@ The remainder of this paper is structured as follows. @sec-data....
 # Data {#sec-data}
 
 ## Data Measurement
+
+## Data cleaning
 
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
