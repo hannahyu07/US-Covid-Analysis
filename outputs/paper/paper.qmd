@@ -49,9 +49,11 @@ world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_
 
 ## Source
 
-The datasets utilized throughout this paper was obtained from the original paper. 
+The datasets utilized throughout this paper was obtained from the `original paper` [@citearticle]. 
 
 ## Methodology
+
+`R` [@citeR] was the language and enviroment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], and `scales` [@citeScales].  
 
 ## Data Measurement
 
