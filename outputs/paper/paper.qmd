@@ -53,7 +53,7 @@ The datasets utilized throughout this paper was obtained from the `original pape
 
 ## Methodology
 
-`R` [@citeR] was the language and enviroment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], and `scales` [@citeScales].  
+`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], and `scales` [@citeScales].  
 
 ## Data Measurement
 
@@ -88,7 +88,6 @@ ggplot(data = world_ghs) +
                        name = "GHS Index Score", direction = 1,
                        limits = c(min(ghs_data$`OVERALL SCORE`, na.rm = TRUE), max(ghs_data$`OVERALL SCORE`, na.rm = TRUE)),
                        labels = comma) +  # Use comma to format numbers with commas
-  labs(title = "Global Health Security Index Scores by Country") +
   theme_minimal() +
   theme(legend.position = "bottom",
         plot.title = element_text(hjust = 0.5))
