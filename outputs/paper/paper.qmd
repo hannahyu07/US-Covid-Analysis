@@ -41,7 +41,7 @@ life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors 
 
 # Introduction
 
-*This reproduction was performed after a replication on the Social Science Reproduction platform: ****[link here]()***
+*This reproduction was performed after a replication on the Social Science Reproduction platform: ****[link here](https://www.socialsciencereproduction.org/reproductions/c35e8e98-762d-4c00-a1a3-544ed0b2008d/index)***
 
 # Data {#sec-data}
 
@@ -206,6 +206,8 @@ ggsave("Change_Life_Exp.png", width = 10, height = 8)
 
 
 # Discussion
+
+
 
 ## Influence of political polarization on adherence to health guidelines.
 
