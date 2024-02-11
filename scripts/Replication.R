@@ -6,7 +6,6 @@
 # License: MIT
 
 
-
 #### Workspace setup ####
 library(tidyverse)
 library(sf)
@@ -23,6 +22,7 @@ library(ggpubr)
 ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
 world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
 life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
 
 ## CREATE FIGURE 1
 ghs_data <- ghs_data %>%
@@ -33,9 +33,6 @@ ghs_data <- ghs_data %>%
     TRUE ~ Country
   ))
 
-
-#| Fig-cap:  Global Health Security Index Scores by Country
-
 world_ghs <- merge(world_map, ghs_data, by.x = "COUNTRY", by.y = "COUNTRY", all.x = TRUE)
 
 
@@ -45,15 +42,14 @@ ggplot(data = world_ghs) +
                        name = "GHS Index Score", direction = 1,
                        limits = c(min(ghs_data$`OVERALL SCORE`, na.rm = TRUE), max(ghs_data$`OVERALL SCORE`, na.rm = TRUE)),
                        labels = comma) +  # Use comma to format numbers with commas
-  labs(title = "Global Health Security Index Scores by Country") +
   theme_minimal() +
   theme(legend.position = "bottom",
         plot.title = element_text(hjust = 0.5))
 
 # Save the plot to a file
-ggsave("GHS_Index_Map.png", width = 11, height = 8)
+ggsave("outputs/data/GHS_Index_Map.png", width = 11, height = 8)
 
-#| fig-cap: Estimates of Life Expectancy at Birth, by Race 2006-2021
+## CREATE FIGURE 2
 
 # Reshape the data if necessary
 life_exp_melted <- reshape(
@@ -70,7 +66,7 @@ life_exp_melted <- life_exp_melted[, c("year_id", "race", "life_exp")]
 
 life_exp_melted[life_exp_melted$race == 'All', "race"] <- 'All races and origins'
 
-## CREATE FIGURE 2 PANEL A
+## CREATE PANEL A
 est_life <- ggplot(data = life_exp_melted[!(life_exp_melted$race %like% 'AIAN|Asian'), ], aes(x = year_id, y = life_exp, color = race)) +
   geom_point(shape = 16, size = 3.5, alpha = 0.9) +  # Circular points with size 2
   geom_line(aes(group = race), alpha = 0.56, size = 1.5) +  # Add group aesthetic for lines
@@ -88,12 +84,11 @@ est_life <- ggplot(data = life_exp_melted[!(life_exp_melted$race %like% 'AIAN|As
         legend.title = element_text(size = 12, face = 'bold')) +
   labs(color = "Race:")  # Set the legend title
 
-est_life
 # Save the plot to a file
-ggsave("Life_Exp.png", width = 10, height = 8)
+ggsave("outputs/data/Life_Exp.png", width = 10, height = 8)
 
+## CREATE FIGURE 3
 
-#| fig-cap: Change in Life Expectancy at Birth from the Previous Year
 # Create a dataframe to store the changes by race
 change_by_race <- data.frame(
   race = c("All races and origins", "Hispanic", "American Indians and Alaska Native", "Asian", "Black", "White"),
@@ -104,7 +99,6 @@ change_by_race <- data.frame(
 tmp <- melt(change_by_race, id.vars = "race", measure.vars = c("change_2020_2019", "change_2021_2020"), 
             variable.name = "period", value.name = "diff")
 
-# Create FIGURE 2 PANEL B
 change_life_exp <- ggplot(data = tmp, aes(x = race, y = diff, fill = period)) +
   geom_bar(stat = "identity", position = "dodge", alpha = 0.71) +
   scale_y_continuous(name = "Change (years)", breaks = -5:0, limits = c(-5.5, 0)) +
@@ -120,12 +114,48 @@ change_life_exp <- ggplot(data = tmp, aes(x = race, y = diff, fill = period)) +
     legend.title = element_text(size = 12, face = 'bold')) + 
   scale_x_discrete(labels = function(x) str_wrap(x, width = 15))
 
+ggsave("outputs/data/Change_Life_Exp.png", width = 10, height = 8)
 
-change_life_exp
-ggsave("Change_Life_Exp.png", width = 10, height = 8)
+## CREATE FIGURE 4
 
+vote_data_by_state <- vote_share %>%
+  group_by(state_name) %>%
+  summarize(
+    total_votes = sum(total_votes),
+    total_gop_votes = sum(votes_gop),
+    total_dem_votes = sum(votes_dem),
+    total_diff = sum(diff),
+    avg_per_gop = mean(per_gop),
+    avg_per_dem = mean(per_dem),
+    avg_per_point_diff = mean(per_point_diff)
+  )
 
+vote_data_by_state <- vote_data_by_state |>
+  mutate(gop_greater = if_else(total_gop_votes > total_dem_votes, 1, 0))
 
+# Create plot summarizing total number of votes by top 10 republican state
+sorted_states <- vote_data_by_state[order(-vote_data_by_state$total_diff), ]
 
+# Extract the top 10 states with the biggest difference
+top_10_states <- head(sorted_states, 10)
+# Create a data frame for plotting
+plot_data <- data.frame(
+  state_name = top_10_states$state_name,
+  republican_votes = top_10_states$total_gop_votes,
+  democrat_votes = top_10_states$total_dem_votes
+)
 
+# Convert data to long format for ggplot
+plot_data_long <- tidyr::pivot_longer(plot_data, cols = c(republican_votes, democrat_votes), names_to = "party", values_to = "votes")
+
+# Create the stacked bar plot
+ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Number of Votes by Top 10 Republican State", x = "State", y = "Total Votes", fill = "Party") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_fill_manual(values = c("republican_votes" = "red", "democrat_votes" = "blue"),
+                    labels = c("Republican Votes", "Democratic Votes"))
+
+ggsave("outputs/data/Voter_Data.png", width = 10, height = 8)
 

@@ -93,13 +93,7 @@ ggplot(data = world_ghs) +
   theme(legend.position = "bottom",
         plot.title = element_text(hjust = 0.5))
 
-# Save the plot to a file
-ggsave("GHS_Index_Map.png", width = 11, height = 8)
 ```
-
-
-
-
 
 
 
@@ -145,12 +139,8 @@ est_life <- ggplot(data = life_exp_melted[!(life_exp_melted$race %like% 'AIAN|As
   labs(color = "Race:")  # Set the legend title
 
 est_life
-# Save the plot to a file
-ggsave("Life_Exp.png", width = 10, height = 8)
+
 ```
-
-
-
 
 
 ```{r}
@@ -197,9 +187,6 @@ change_life_exp <- ggplot(data = tmp, aes(x = race, y = diff, fill = period)) +
 
 
 change_life_exp
-ggsave("Change_Life_Exp.png", width = 10, height = 8)
-
-
 
 ```
 
@@ -225,9 +212,13 @@ vote_data_by_state <- vote_data_by_state |>
   mutate(gop_greater = if_else(total_gop_votes > total_dem_votes, 1, 0))
 
 ```
+
+
 ```{r}
 #| echo: false
 #| eval: true
+#| label: fig-Vote
+#| fig-cap: Total Number of Votes by Top 10 Republican State
 #| warning: false
 
 # Create plot summarizing total number of votes by top 10 republican state
