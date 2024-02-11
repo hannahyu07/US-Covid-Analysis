@@ -1,0 +1,131 @@
+#### Preamble ####
+# Purpose: Paper Replication
+# Author: Adrian Ly, Hannah Yu
+# Date: 9 February 2024 
+# Contact: adrian.ly@mail.utoronto.ca
+# License: MIT
+
+
+
+#### Workspace setup ####
+library(tidyverse)
+library(sf)
+library(readxl)
+library(knitr)
+library(janitor)
+library(lubridate)
+library(dplyr)
+library(data.table)
+library(RColorBrewer)
+library(ggpubr)
+
+#### Reading files ####
+ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
+life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+
+## CREATE FIGURE 1
+ghs_data <- ghs_data %>%
+  mutate(COUNTRY = case_when(
+    Country == "United States of America" ~ "United States",
+    Country == "Bolivia (Plurinational State of)" ~ "Bolivia",
+    # Add other necessary name changes here
+    TRUE ~ Country
+  ))
+
+
+#| Fig-cap:  Global Health Security Index Scores by Country
+
+world_ghs <- merge(world_map, ghs_data, by.x = "COUNTRY", by.y = "COUNTRY", all.x = TRUE)
+
+
+ggplot(data = world_ghs) +
+  geom_sf(aes(fill = `OVERALL SCORE`), color = "white") +
+  scale_fill_distiller(palette = "Spectral", na.value = "lightgrey", 
+                       name = "GHS Index Score", direction = 1,
+                       limits = c(min(ghs_data$`OVERALL SCORE`, na.rm = TRUE), max(ghs_data$`OVERALL SCORE`, na.rm = TRUE)),
+                       labels = comma) +  # Use comma to format numbers with commas
+  labs(title = "Global Health Security Index Scores by Country") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5))
+
+# Save the plot to a file
+ggsave("GHS_Index_Map.png", width = 11, height = 8)
+
+#| fig-cap: Estimates of Life Expectancy at Birth, by Race 2006-2021
+
+# Reshape the data if necessary
+life_exp_melted <- reshape(
+  life_exp,
+  idvar = "year_id",
+  varying = list(names(life_exp)[-1]), 
+  v.names = "life_exp",
+  times = names(life_exp)[-1],
+  new.row.names = 1:1e5,
+  direction = "long"
+)
+life_exp_melted$race <- gsub("_", " ", life_exp_melted$time)  # Convert "_" to " " in race names
+life_exp_melted <- life_exp_melted[, c("year_id", "race", "life_exp")]
+
+life_exp_melted[life_exp_melted$race == 'All', "race"] <- 'All races and origins'
+
+## CREATE FIGURE 2 PANEL A
+est_life <- ggplot(data = life_exp_melted[!(life_exp_melted$race %like% 'AIAN|Asian'), ], aes(x = year_id, y = life_exp, color = race)) +
+  geom_point(shape = 16, size = 3.5, alpha = 0.9) +  # Circular points with size 2
+  geom_line(aes(group = race), alpha = 0.56, size = 1.5) +  # Add group aesthetic for lines
+  scale_y_continuous(name = 'Life expectancy at birth', limits = c(65, 85)) +
+  scale_x_continuous(name = '', breaks = seq(2006, 2020, by = 2), limits = c(2005.5, 2021.5)) +
+  scale_color_manual(values = c('#0c4928', '#0b3669', '#4c2962', '#5a0f1c'), 
+                     labels = c("All races and origins", "Hispanic", "Black", "White")) +
+  # Darker color values
+  theme_minimal() +
+  theme(axis.title = element_text(size = 14),  # Adjusting the size of the y-axis label
+        axis.text = element_text(size = 12),
+        legend.position = 'bottom',  # Set legend position to bottom
+        legend.justification = 'center',  # Center the legend
+        legend.text = element_text(size = 10),  # Adjusting the font size for legend text
+        legend.title = element_text(size = 12, face = 'bold')) +
+  labs(color = "Race:")  # Set the legend title
+
+est_life
+# Save the plot to a file
+ggsave("Life_Exp.png", width = 10, height = 8)
+
+
+#| fig-cap: Change in Life Expectancy at Birth from the Previous Year
+# Create a dataframe to store the changes by race
+change_by_race <- data.frame(
+  race = c("All races and origins", "Hispanic", "American Indians and Alaska Native", "Asian", "Black", "White"),
+  change_2020_2019 = c(77 - 78.8, 77.9 - 81.9, 67.1 - 71.8, 83.6 - 85.6, 71.5 - 74.8, 77.4 - 78.8),
+  change_2021_2020 = c(76.1 - 77, 77.7 - 77.9, 65.2 - 67.1, 83.5 - 83.6, 70.8 - 71.5, 76.4 - 77.4)
+)
+# Melt the dataframe
+tmp <- melt(change_by_race, id.vars = "race", measure.vars = c("change_2020_2019", "change_2021_2020"), 
+            variable.name = "period", value.name = "diff")
+
+# Create FIGURE 2 PANEL B
+change_life_exp <- ggplot(data = tmp, aes(x = race, y = diff, fill = period)) +
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.71) +
+  scale_y_continuous(name = "Change (years)", breaks = -5:0, limits = c(-5.5, 0)) +
+  scale_fill_manual(name = "Time period", values = c('#243f29', '#186d38'), labels = c('2019-2020', '2020-2021')) + 
+  scale_color_manual(name = "Time period", values = c('#243f29', '#186d38'), labels = c('2019-2020', '2020-2021')) + 
+  theme_minimal() + labs(x = '') +
+  geom_text(aes(label = sprintf("%.1f", diff)), position = position_dodge(width = 0.9), vjust = 1.3, size = 4) +
+  theme(
+    axis.title = element_text(size = 14),
+    axis.text.x = element_text(size = 10, hjust = 1),
+    axis.text.y = element_text(size = 8),
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 12, face = 'bold')) + 
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 15))
+
+
+change_life_exp
+ggsave("Change_Life_Exp.png", width = 10, height = 8)
+
+
+
+
+
+
