@@ -259,9 +259,11 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
 
 # Discussion
 
-
+This begs the question as to why we are seeing these results. There isn't exactly a single answer to this question, however we can certainly point out some considerable factors to this result. 
 
 ## Influence of political polarization on adherence to health guidelines.
+
+Political polarization has significantly impacted the adherence to health guidelines during the COVID-19 pandemic. The divergence in political ideologies has translated into differing attitudes towards health directives, including mask mandates, social distancing, and vaccination uptake. Various studies and our own results have shown that areas with higher support for one political party exhibited distinct behaviors and compliance levels with health recommendations, which directly correlated with COVID-19 case rates and mortality. An news article from `ABC News` [@citesource1] shows that the top states with the highest COVID-19 deaths are Arizona, and Washington with 581 deaths and 526 deaths respectively per 100,000 people. According to 2020 presidential voting data published by `CNN`, we have both states having the electoral vote of democrat with Washington wining by 58% [@citesource2] and Arizona winning by 49.4% [@citesource3]. Another news article by `ContagionLive` [@citesource4] also makes the claim of both Arizona and Washington having the highest COVID-19 mortality. This polarization has not only influenced individual behavior but also shaped state and local health policies, further entrenching the disparities in health outcomes.
 
 ## Impact of government transparency and consistent communication on public trust.
 
