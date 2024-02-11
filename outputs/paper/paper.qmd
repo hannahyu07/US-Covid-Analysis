@@ -36,6 +36,7 @@ library(scales)
 ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
 world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
 life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
 ```
 
 
@@ -203,6 +204,57 @@ ggsave("Change_Life_Exp.png", width = 10, height = 8)
 ```
 
 
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+vote_data_by_state <- vote_share %>%
+  group_by(state_name) %>%
+  summarize(
+    total_votes = sum(total_votes),
+    total_gop_votes = sum(votes_gop),
+    total_dem_votes = sum(votes_dem),
+    total_diff = sum(diff),
+    avg_per_gop = mean(per_gop),
+    avg_per_dem = mean(per_dem),
+    avg_per_point_diff = mean(per_point_diff)
+  )
+
+vote_data_by_state <- vote_data_by_state |>
+  mutate(gop_greater = if_else(total_gop_votes > total_dem_votes, 1, 0))
+
+```
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+
+# Create plot summarizing total number of votes by top 10 republican state
+sorted_states <- vote_data_by_state[order(-vote_data_by_state$total_diff), ]
+
+# Extract the top 10 states with the biggest difference
+top_10_states <- head(sorted_states, 10)
+# Create a data frame for plotting
+plot_data <- data.frame(
+  state_name = top_10_states$state_name,
+  republican_votes = top_10_states$total_gop_votes,
+  democrat_votes = top_10_states$total_dem_votes
+)
+
+# Convert data to long format for ggplot
+plot_data_long <- tidyr::pivot_longer(plot_data, cols = c(republican_votes, democrat_votes), names_to = "party", values_to = "votes")
+
+# Create the stacked bar plot
+ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Number of Votes by Top 10 Republican State", x = "State", y = "Total Votes", fill = "Party") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_fill_manual(values = c("republican_votes" = "red", "democrat_votes" = "blue"),
+                    labels = c("Republican Votes", "Democratic Votes"))
+
+```
 
 
 # Discussion
