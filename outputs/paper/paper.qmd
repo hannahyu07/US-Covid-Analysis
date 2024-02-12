@@ -51,6 +51,9 @@ deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAs
 
 *This reproduction was performed after a replication on the Social Science Reproduction platform: ****[link here](https://www.socialsciencereproduction.org/reproductions/c35e8e98-762d-4c00-a1a3-544ed0b2008d/index)***
 
+
+*The introduction is self-contained and tells a reader everything they need to know including: 1) broader context to motivate; 2) some detail about what the paper is about; 3) a clear gap that needs to be filled; 4) what was done; 5) what was found; 6) why it is important; 7) the structure of the paper. A reader should be able to read only the introduction and know what was done, why, and what was found. Likely 3 or 4 paragraphs, or 10 per cent of total. The estimand is clearly stated in the introduction.*
+
 # Data {#sec-data}
 
 
@@ -69,7 +72,7 @@ The datasets utilized in this paper were mainly obtained from the `original pape
 
 ## Data Measurement
 
-## Data cleaning
+*A thorough discussion of measurement, relating to the dataset, is provided in the data section.*
 
 ## Data Visualization
 
