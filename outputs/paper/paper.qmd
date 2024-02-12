@@ -57,10 +57,10 @@ deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAs
 
 ## Source
 
-The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. Additionally, to address the original paper's lack of US Covid statistics and political party support data, we incorporated information from @citedata1 and @citedata2.
+The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. Additionally, to address the original paper's lack of US COVID statistics and political party support data, we incorporated information from @citedata1 and @citedata2.
 
 @citedata1 discusses the long-term impacts of COVID-related school closures. From this source, we utilized the dataset on voting shares during the 2020 election by county.
-@citedata2 provides summaries of COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes.Our reproduction aims to fill these gaps and also includes tables and graphs that were not presented in the original paper to support our findings.
+@citedata2 summarizes COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes. Our reproduction aims to fill these gaps and includes tables and graphs not presented in the original paper to support our findings.
 
 
 ## Methodology
@@ -107,7 +107,11 @@ ggplot(data = world_ghs) +
 
 # Results
 
-Our results are summarized in @fig-GHS.
+Our results are summarized in the following figures. @fig-ELE illustrates the trend of life expectancy at birth across different racial groups over time. @tbl-life-exp provides a more detailed breakdown of the life expectancy before and during COVID for...  
+
+Unfortunately, due to the unavailability of data over time for Asian, American Indian, and Alaska Native communities, they have been excluded from the time series graph.
+
+An intriguing observation is the consistently higher life expectancy among Hispanic individuals compared to other groups, even amidst the challenges posed by COVID-19. On the other hand, Black individuals l have consistently exhibited lower life expectancy, which further declined notably in 2021, reaching just over 70.8 years old. The life expectancy trends of white people and all other races and origins remain close together throughout the 14 years, with minimum variance. Specifically, the life expectancy for White individuals decreased from 78.8 to 76.4 years old from pre-pandemic levels in 2019 to 2021, while for Hispanic individuals, it dropped by 4.2 years, and for Black individuals, it declined by 4 years during the same period.
 
 ```{r fig.width=7, fig.height=3.5}
 #| echo: false
@@ -295,6 +299,57 @@ kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (pe
 
 ```
 
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-life-exp
+#| tbl-cap: Life Expectancy by Race (2019-2021)
+#| warning: false
+# Filter the data for the years 2019 to 2021
+life_exp_subset <- life_exp_melted[life_exp_melted$year_id >= 2019 & life_exp_melted$year_id <= 2021, ]
+
+# Pivot the data to create a table and rename columns
+life_exp_table <- reshape2::dcast(life_exp_subset, year_id ~ race, value.var = "life_exp")
+colnames(life_exp_table) <- c("Year", "All races and origins", "Hispanic", "AIAN", "Asian", "Black", "White")
+
+# Create a table using knitr::kable
+
+kable(life_exp_table, col.names = c("Year", "All Races and Origins", "Hispanic", "AIAN", "Asian", "Black", "White"))
+
+
+```
+
+@fig-CLE serves as a valuable addition to our previous analysis with the inclusion of Asians, American Indians, and Alaska Natives during the critical period from 2019 to 2021. With these additional ethnic categories, we can discern that American Indians and Alaska Natives experienced significant impacts from the pandemic, with a decrease of 4.7 years in the first year and 1.9 years in the second year, totaling 6.6 years.
+
+With a chart that depicts the change in life expectancy each year by ethnicity, we can better gain a more comprehensive understanding of the impact of COVID by ethnicity. While the declines in life expectancy are smaller in magnitude from 2020 to 2021, they are notably minimal for Asians and Hispanics, with reductions of -0.1 and -0.2 years respectively. (Insert some sources tmrw) 
+
+Numerous sources have indicated a correlation between a state's political affiliation and its handling of COVID issues (sources to be inserted tomorrow). To testify to the claim, we collected the voting data for each of the 50 states for the 2020 presidential election. We then selected the ten states with the highest proportions of Republican votes. These voting patterns are visualized in Figure @fig-Vote, where red symbols represent Republican votes and blue symbols represent Democratic votes. Among the top ten states, Tennessee recorded the highest total number of votes, while Wyoming boasted the highest proportion of Republican votes.
+
+Given the variation in population sizes among states, direct comparisons of COVID-19 case numbers are inherently flawed. As an alternative, we employed death rates per 100,000 people as a metric for evaluating each state's COVID preparedness and situation. We then produced @tbl-deaths that rank the top ten states with the highest death rates from COVID-19 per 100,000 people to examine the potential correlation between party preferences and COVID-related deaths. Notably, We found that six of the ten top Republican states made a reappearance in the top death rates table; these states are Oklahoma, West Virginia, Arkansas, Alabama, Tennessee, and Kentucky. 
+(Insert quotes about the republican party and COVID tmrw)
+
+Following from our previous analysis regarding individuals' political affiliations, we have developed Figure @fig-deaths-rates-votes, which encompasses all 50 states of the US along with their political leanings based on which party garnered the majority votes. This information is juxtaposed against their respective COVID-19 death rates. 
+
+While we cannot make any definitive assertions about stark differences, we do observe that the Republican-leaning states are slightly more clustered around higher death rates ranging from  350 to 450 deaths, while the Democratic-leaning states appear to be more evenly distributed, and notably one Democratic-leaning state has the lowest death rate. An intriguing observation is that although many Republican-leaning states demonstrate higher COVID death rates, it is noteworthy that Arizona, typically considered a Democratic-leaning state, records the highest death rate among all states.
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: fig-deaths-rates-votes
+#| fig-cap: COVID-19 Death Rates vs. Republican Votes
+#| warning: false
+merged_data <- merge(deaths, vote_data_by_state, by.x = "State", by.y = "state_name")
+# Create a scatter plot of COVID-19 death rates against the percentage of Republican votes
+ggplot(merged_data, aes(x = as.factor(gop_greater), y = Death_Rate)) +
+  geom_point(shape = 21, fill = "skyblue", color = "darkblue", size = 3) + # Use filled circles with blue color
+  labs(x = "Republican Votes", y = "COVID-19 Death Rate") +
+  ggtitle("COVID-19 Death Rates vs. Republican Votes") +
+  theme_minimal() + # Use minimal theme for cleaner appearance
+  theme(plot.title = element_text(size = 16, face = "bold"), # Adjust title appearance
+        axis.title = element_text(size = 14)) + # Adjust axis labels appearance
+  scale_x_discrete(labels = c("Democratic Majority", "Republican Majority")) # Set custom labels for x-axis
+```
+
 \newpage
 
 
@@ -302,27 +357,30 @@ kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (pe
 
 # Discussion
 
-This begs the question as to why we are seeing these results. There isn't exactly a single answer to this question, however we can certainly point out some considerable factors to this result. 
+This begs the question as to why we are seeing these results. There isn't exactly a single answer to this question, however, we can certainly point out some considerable factors to this result. 
 
 ## Influence of political polarization on adherence to health guidelines.
 
 Political polarization has significantly impacted the adherence to health guidelines during the COVID-19 pandemic. The divergence in political ideologies has translated into differing attitudes towards health directives, including mask mandates, social distancing, and vaccination uptake. 
 
-Various studies and our own results have shown that areas with higher support for one political party exhibited distinct behaviors and compliance levels with health recommendations, which directly correlated with COVID-19 case rates and mortality. An news article from `ABC News` [@citesource1] shows that the top states with the highest COVID-19 deaths are Arizona, and Washington with 581 deaths and 526 deaths respectively per 100,000 people. According to 2020 presidential voting data published by `CNN`, we have both states having the electoral vote of democrat with Washington wining by 58% [@citesource2] and Arizona winning by 49.4% [@citesource3]. Another news article by `ContagionLive` [@citesource4] also makes the claim of both Arizona and Washington having the highest COVID-19 mortality. This polarization has not only influenced individual behavior but also shaped state and local health policies, further entrenching the disparities in health outcomes. 
+Various studies and our results have shown that areas with higher support for one political party exhibited distinct behaviors and compliance levels with health recommendations, which directly correlated with COVID-19 case rates and mortality. A news article from `ABC News` [@citesource1] shows that the top states with the highest COVID-19 deaths are Arizona, and Washington with 581 deaths and 526 deaths respectively per 100,000 people. According to 2020 presidential voting data published by `CNN`, we have both states having the electoral vote of Democrat with Washington winning by 58% [@citesource2] and Arizona winning by 49.4% [@citesource3]. Another news article by `ContagionLive` [@citesource4] also claims both Arizona and Washington have the highest COVID-19 mortality. This polarization has not only influenced individual behavior but also shaped state and local health policies, further entrenching the disparities in health outcomes. 
 
-The adherence to health guidelines are evident in the varied health outcomes observed across the United States. Regions with lower compliance to health directives, often influenced by political leanings, have experienced higher rates of COVID-19 transmission, hospitalizations, and deaths. The disparities in vaccine uptake, driven by political affiliations, have further exacerbated these outcomes, leaving certain communities more vulnerable to the virus and its variants. In order to mitigate the influence of political polarization on public health, it is imperative to depoliticize health guidelines and focus on evidence-based approaches to disease prevention and control. Building trust in health institutions and promoting bipartisan support for public health measures are essential steps towards achieving higher compliance and better health outcomes. Engaging trusted community leaders and utilizing targeted communication strategies can also help bridge the divide and encourage adherence to health guidelines.
+The adherence to health guidelines is evident in the varied health outcomes observed across the United States. Regions with lower compliance to health directives, often influenced by political leanings, have experienced higher rates of COVID-19 transmission, hospitalizations, and deaths. The disparities in vaccine uptake, driven by political affiliations, have further exacerbated these outcomes, leaving certain communities more vulnerable to the virus and its variants. To mitigate the influence of political polarization on public health, it is imperative to depoliticize health guidelines and focus on evidence-based approaches to disease prevention and control. Building trust in health institutions and promoting bipartisan support for public health measures are essential steps toward achieving higher compliance and better health outcomes. Engaging trusted community leaders and utilizing targeted communication strategies can also help bridge the divide and encourage adherence to health guidelines.
 
 ## Impact of government transparency and consistent communication on public trust.
 
 The politicization of health guidelines and mixed messages from political and health leaders during the COVID-19 pandemic have significantly undermined the effectiveness of public health messaging, leading to confusion, skepticism, and eroded trust among the public. Initially, inconsistencies in recommendations, such as on mask usage, challenged the principle of clear, consistent, and science-based communication essential for an effective public health response. Moreover, the transparency of government actions and decision-making processes is crucial in building and maintaining public trust, especially during health crises. The level of public trust was greatly affected by the openness and accuracy with which governments, at all levels, communicated about the evolving situation, the reasoning behind guidelines, and the measures taken to combat the virus, emphasizing the importance of transparent reporting of data related to case counts, hospitalizations, vaccine distribution, and side effects. Furthermore, consistent communication from public health officials and government leaders is key to ensuring adherence to health guidelines, where inconsistencies, such as changes in mask-wearing guidelines without clear explanations, have led to public confusion. The direct correlation between government transparency, consistent communication, and public behavior is self-evident, with populations receiving clear and transparent information being more likely to adhere to guidelines, participate in testing and tracing efforts, and accept vaccination. Drawing lessons from the pandemic, strategies for improving government transparency and communication in future health emergencies should include establishing centralized information hubs, ensuring regular and predictable communication from health authorities, engaging community leaders in information dissemination, and harnessing digital platforms and social media to amplify public health messages, thus reinforcing public trust and compliance.
 
-## Role of social vulnerabilities and healthcare access disparities in pandemic impact.
+## Role of social vulnerabilities and healthcare access disparities in pandemic impact
 
 The COVID-19 pandemic starkly highlighted how social vulnerabilities and disparities in healthcare access exacerbated the impact of global health crises, contributing to significant variations in disease outcomes and underscoring the need for targeted public health strategies that address these disparities' root causes. Social vulnerabilities, such as socioeconomic status, race, ethnicity, and housing conditions, critically determined COVID-19 outcomes' severity, with populations in crowded housing, limited access to sanitation, and lower socioeconomic brackets experiencing higher transmission rates due to social distancing and hygiene maintenance challenges. An independent study done by the `Government of Canada` states that it "identified that the risk of COVID-19 related deaths in Black, Asian and minority ethnic groups was nearly 1.5 times higher than White individuals" [@citesource5]. Another news article done by the `MSN` [@citesource6] states that 'racial minority participants reported more negative impacts on health status, activity, and absence from work as compared to the White population.' The pandemic's economic toll further limited these groups' healthcare access, amplifying vulnerabilities. Disparities in healthcare access played a significant role in influencing COVID-19 morbidity and mortality, with communities facing healthcare facility shortages, provider scarcities, and barriers due to insurance or financial constraints at heightened risk. These disparities were evident in the uneven vaccine distribution and access, highlighting the advantages of regions with strong healthcare infrastructure. Marginalized populations, including racial and ethnic minorities, faced compounded risks from social vulnerabilities and healthcare disparities, evidenced by higher infection, hospitalization, and death rates due to factors like essential service employment and prevalent pre-existing conditions. A news article from `CNN` [@citesource7] talks about how many essential workers, who cannot work from home, are from black and Latinx communities. These include healthcare professionals, grocery cashiers, delivery workers, and public transport employees. Despite their crucial roles, they often lack adequate pay, protection, and respect. Addressing these disparities in future pandemics requires public health strategies that prioritize equity and inclusivity, including community-based healthcare investments, enhanced vulnerable community outreach, and equitable healthcare resource access policies. By incorporating social determinants of health into public health preparedness plans, responses can effectively protect at-risk populations, making future public health responses more resilient, inclusive, and effective in safeguarding all population segments.
 
 ## Strategies for improving real-time data collection and sharing for public health decisions.
 
-## Weaknesses and next stepsa
+To address the fragmentation in data collection and sharing witnessed during the pandemic, it's crucial to establish integrated data platforms that enable seamless health data exchange among various health agencies and stakeholders, utilizing cloud computing and APIs for real-time accessibility and usability. Equally important is enhancing data standardization and interoperability through universal standards like FHIR (Fast Healthcare Interoperability Resources) to facilitate efficient data sharing [@citesource8]. Investing in digital surveillance systems, which employ AI and machine learning to sift through diverse data sources for early outbreak detection, is essential for rapid response to health threats. Furthermore, fostering public-private partnerships can harness the agility of the private sector and the public health expertise of governmental agencies to enhance data analytics capabilities. Ensuring the privacy and security of health data through robust governance frameworks and advanced encryption is paramount to maintaining public trust. Engaging communities in these initiatives ensures their relevance and fosters trust while building global data-sharing networks encourages international collaboration, crucial for a concerted response to pandemics. Collectively, these strategies are fundamental to bolstering public health decision-making and preparedness, making our health systems more resilient against the challenges posed by emerging infectious diseases.
+
+
+## Weaknesses and next steps
 
 Weaknesses and next steps should also be included.
 
