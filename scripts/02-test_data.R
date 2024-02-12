@@ -20,7 +20,7 @@ library(ggpubr)
 #### Test data ####
 ## Test simulated_life_data
 # Load the dataset generated in R
-data1 <- read.csv("outputs/simulated_life_exp.csv", stringsAsFactors = FALSE)
+data1 <- read.csv("outputs/data/simulated_life_exp.csv", stringsAsFactors = FALSE)
 
 # 1. Data Structure Check
 # Check the number of rows and columns
@@ -41,7 +41,7 @@ print(paste("Numeric Check:", ifelse(numeric_check, "Passed", "Failed")))
 
 ## Test simulated_vote_data
 # Load the dataset generated in R
-data2 <- read.csv("outputs/simulated_vote_data.csv", stringsAsFactors = FALSE)
+data2 <- read.csv("outputs/data/simulated_vote_data.csv", stringsAsFactors = FALSE)
 
 # Test 1: Check number of rows and columns
 num_rows <- nrow(data2)

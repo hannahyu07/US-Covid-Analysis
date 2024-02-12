@@ -53,7 +53,7 @@ for (i in 1:length(years)) {
 }
 
 # Save the dataset to a CSV file
-write.csv(data, "simulated_life_data.csv", row.names = FALSE)
+write.csv(data, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
 
 # Print the dataset to the console
 print(data)
@@ -95,7 +95,7 @@ simulated_vote_df$state_name <- state_names
 print(simulated_vote_df)
 
 # Define file path
-file_path <- "simulated_vote_data.csv"
+file_path <- "outputs/data/simulated_vote_data.csv"
 
 # Write simulated vote data to CSV
 write.csv(simulated_vote_df, file = file_path, row.names = FALSE)

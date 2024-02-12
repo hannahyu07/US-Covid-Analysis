@@ -11,7 +11,6 @@ abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
 toc: true
-prefer-html: true
 bibliography: references.bib
 ---
 
@@ -19,6 +18,7 @@ bibliography: references.bib
 #| include: false
 #| warning: false
 #| message: false
+
 #### Workspace setup ####
 library(tidyverse)
 library(sf)
@@ -32,22 +32,16 @@ library(RColorBrewer)
 library(ggpubr)
 library(scales)
 library(here)
-library(readxl)
 library(kableExtra)
 
 
 #### Reading files ####
 
-#ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
-#world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
-#life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
-#vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
-ghs_data <- read_excel("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/GHS_index.xlsx")
-world_map <- st_read("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/world/World_Countries__Generalized_.shp")
-life_exp <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/life_table.csv", stringsAsFactors = FALSE)
-vote_share <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/Vote_share_2020_data.csv", stringsAsFactors = FALSE)
-deaths <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/covid-19-death-rates.csv", stringsAsFactors = FALSE)
-
+ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
+life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
+deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
 
 
 ```
@@ -71,7 +65,7 @@ The datasets utilized in this paper were mainly obtained from the 'original pape
 
 ## Methodology
 
-`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], and `scales` [@citeScales].  
+`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], and `scales` [@citeScales].  
 
 ## Data Measurement
 
@@ -281,10 +275,9 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl- deaths
+#| label: tbl-deaths
 #| tbl-cap: Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)
 #| warning: false
-deaths <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/covid-19-death-rates.csv", stringsAsFactors = FALSE)
 
 # Assign column names
 colnames(deaths) <- c("State", "Death_Rate")
@@ -297,8 +290,9 @@ deaths$Rank <- 1:nrow(deaths)
 table <- head(data.frame(Rank = deaths$Rank, State = deaths$State, Deaths = deaths$Death_Rate), 10)
 
 # Print the table using kableExtra
-kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)", align = "c", format = "html") %>%
+kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)", align = "c") %>%
   kable_styling(full_width = FALSE)
+
 ```
 
 
@@ -326,7 +320,7 @@ The politicization of health guidelines and mixed messages from political and he
 
 ## Strategies for improving real-time data collection and sharing for public health decisions.
 
-## Weaknesses and next steps
+## Weaknesses and next stepsa
 
 Weaknesses and next steps should also be included.
 
