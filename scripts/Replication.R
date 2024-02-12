@@ -53,7 +53,7 @@ ggplot(data = world_ghs) +
         plot.title = element_text(hjust = 0.5))
 
 # Save the plot to a file
-ggsave("outputs/data/GHS_Index_Map.png", width = 11, height = 8)
+ggsave("outputs/graphs/GHS_Index_Map.png", width = 11, height = 8)
 
 ## CREATE FIGURE 2
 
@@ -91,7 +91,7 @@ est_life <- ggplot(data = life_exp_melted[!(life_exp_melted$race %like% 'AIAN|As
   labs(color = "Race:")  # Set the legend title
 
 # Save the plot to a file
-ggsave("outputs/data/Life_Exp.png", width = 10, height = 8)
+ggsave("outputs/graphs/Life_Exp.png", width = 10, height = 8)
 
 ## CREATE FIGURE 3
 
@@ -120,7 +120,7 @@ change_life_exp <- ggplot(data = tmp, aes(x = race, y = diff, fill = period)) +
     legend.title = element_text(size = 12, face = 'bold')) + 
   scale_x_discrete(labels = function(x) str_wrap(x, width = 15))
 
-ggsave("outputs/data/Change_Life_Exp.png", width = 10, height = 8)
+ggsave("outputs/graphs/Change_Life_Exp.png", width = 10, height = 8)
 
 ## CREATE FIGURE 4
 
@@ -163,7 +163,7 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
   scale_fill_manual(values = c("republican_votes" = "red", "democrat_votes" = "blue"),
                     labels = c("Republican Votes", "Democratic Votes"))
 
-ggsave("outputs/data/Voter_Data.png", width = 10, height = 8)
+ggsave("outputs/graphs/Voter_Data.png", width = 10, height = 8)
 
 
 ## CREATE TABLE 1
@@ -182,7 +182,8 @@ table <- head(data.frame(Rank = deaths$Rank, State = deaths$State, Deaths = deat
 kable_img <- kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)", align = "c") %>%
   kable_styling(full_width = FALSE)
 
-save_kable(kable_img, "outputs/data/table.html")
+save_kable(kable_img, "outputs/graphs/table.html")
 
 # Capture the table as an image
-webshot::webshot("outputs/data/table.html", "outputs/data/table.png")
+webshot::webshot("outputs/graphs/table.html", "outputs/graphs/table.png")
+
