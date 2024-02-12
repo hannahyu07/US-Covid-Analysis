@@ -237,10 +237,6 @@ vote_data_by_state <- vote_data_by_state |>
 #| fig-cap: Total Number of Votes in Top 10 States with Highest Proportion of Republican Votes 
 #| warning: false
 
-# Create plot summarizing total number of votes by top 10 republican state
-#sorted_states <- vote_data_by_state[order(-vote_data_by_state$total_diff), ]
-
-
 # Calculate proportion of Republican votes
 sorted_states <- vote_data_by_state
 sorted_states$proportion_republican <- sorted_states$total_gop_votes / sorted_states$total_votes

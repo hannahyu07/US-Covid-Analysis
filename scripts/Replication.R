@@ -139,8 +139,16 @@ vote_data_by_state <- vote_share %>%
 vote_data_by_state <- vote_data_by_state |>
   mutate(gop_greater = if_else(total_gop_votes > total_dem_votes, 1, 0))
 
-# Create plot summarizing total number of votes by top 10 republican state
-sorted_states <- vote_data_by_state[order(-vote_data_by_state$total_diff), ]
+# Calculate proportion of Republican votes
+sorted_states <- vote_data_by_state
+sorted_states$proportion_republican <- sorted_states$total_gop_votes / sorted_states$total_votes
+
+# Sort by proportion of Republican votes
+sorted_states <- sorted_states[order(-sorted_states$proportion_republican), ]
+
+# Select top 10 states
+top_10_states <- head(sorted_states, 10)
+
 
 # Extract the top 10 states with the biggest difference
 top_10_states <- head(sorted_states, 10)
@@ -161,7 +169,7 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_fill_manual(values = c("republican_votes" = "red", "democrat_votes" = "blue"),
-                    labels = c("Republican Votes", "Democratic Votes"))
+                    labels = c("Democratic Votes", "Republican Votes"))
 
 ggsave("outputs/graphs/Voter_Data.png", width = 10, height = 8)
 
@@ -186,4 +194,36 @@ save_kable(kable_img, "outputs/graphs/table.html")
 
 # Capture the table as an image
 webshot::webshot("outputs/graphs/table.html", "outputs/graphs/table.png")
+
+## CREATE TABLE 2
+
+# Filter the data for the years 2019 to 2021
+life_exp_subset <- life_exp_melted[life_exp_melted$year_id >= 2019 & life_exp_melted$year_id <= 2021, ]
+
+# Pivot the data to create a table and rename columns
+life_exp_table <- reshape2::dcast(life_exp_subset, year_id ~ race, value.var = "life_exp")
+colnames(life_exp_table) <- c("Year", "All races and origins", "Hispanic", "AIAN", "Asian", "Black", "White")
+
+# Create a table using knitr::kable
+
+kable_img2 <- kable(life_exp_table, col.names = c("Year", "All Races and Origins", "Hispanic", "AIAN", "Asian", "Black", "White"))
+
+save_kable(kable_img2, "outputs/graphs/table2.txt")
+
+
+## CREATE FIGURE 5
+
+merged_data <- merge(deaths, vote_data_by_state, by.x = "State", by.y = "state_name")
+# Create a scatter plot of COVID-19 death rates against the percentage of Republican votes
+ggplot(merged_data, aes(x = as.factor(gop_greater), y = Death_Rate)) +
+  geom_point(shape = 21, fill = "skyblue", color = "darkblue", size = 3) + # Use filled circles with blue color
+  labs(x = "Republican Votes", y = "COVID-19 Death Rate") +
+  ggtitle("COVID-19 Death Rates vs. Republican Votes") +
+  theme_minimal() + # Use minimal theme for cleaner appearance
+  theme(plot.title = element_text(size = 16, face = "bold"), # Adjust title appearance
+        axis.title = element_text(size = 14)) + # Adjust axis labels appearance
+  scale_x_discrete(labels = c("Democratic Majority", "Republican Majority")) # Set custom labels for x-axis
+
+
+ggsave("outputs/graphs/COVID-deaths-rates-votes.png", width = 10, height = 8)
 
