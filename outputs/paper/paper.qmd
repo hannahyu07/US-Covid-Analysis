@@ -325,7 +325,9 @@ The COVID-19 pandemic starkly highlighted how social vulnerabilities and dispari
 
 ## Strategies for improving real-time data collection and sharing for public health decisions.
 
-## Weaknesses and next stepsa
+To address the fragmentation in data collection and sharing witnessed during the pandemic, it's crucial to establish integrated data platforms that enable seamless health data exchange among various health agencies and stakeholders, utilizing cloud computing and APIs for real-time accessibility and usability. Equally important is enhancing data standardization and interoperability through universal standards like FHIR (Fast Healthcare Interoperability Resources) to facilitate efficient data sharing. Investing in digital surveillance systems, which employ AI and machine learning to sift through diverse data sources for early outbreak detection, is essential for rapid response to health threats. Furthermore, fostering public-private partnerships can harness the agility of the private sector and the public health expertise of governmental agencies to enhance data analytics capabilities. Ensuring the privacy and security of health data through robust governance frameworks and advanced encryption is paramount to maintaining public trust. Engaging communities in these initiatives ensures their relevance and fosters trust, while building global data sharing networks encourages international collaboration, crucial for a concerted response to pandemics. Collectively, these strategies are fundamental to bolstering public health decision-making and preparedness, making our health systems more resilient against the challenges posed by emerging infectious diseases.
+
+## Weaknesses and next steps
 
 Weaknesses and next steps should also be included.
 
