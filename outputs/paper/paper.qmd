@@ -57,7 +57,7 @@ deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAs
 
 ## Source
 
-The datasets utilized in this paper were mainly obtained from the 'original paper' [@citearticle]. Additionally, to address the original paper's lack of US Covid statistics and political party support data, we incorporated information from @citedata1 and @citedata2.
+The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. Additionally, to address the original paper's lack of US Covid statistics and political party support data, we incorporated information from @citedata1 and @citedata2.
 
 @citedata1 discusses the long-term impacts of COVID-related school closures. From this source, we utilized the dataset on voting shares during the 2020 election by county.
 @citedata2 provides summaries of COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes.Our reproduction aims to fill these gaps and also includes tables and graphs that were not presented in the original paper to support our findings.
@@ -65,7 +65,7 @@ The datasets utilized in this paper were mainly obtained from the 'original pape
 
 ## Methodology
 
-`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], and `scales` [@citeScales].  
+`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], `webshot` [@citewebshot], `webshot2` [@citewebshot2], and `scales` [@citeScales].  
 
 ## Data Measurement
 
@@ -295,7 +295,7 @@ kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (pe
 
 ```
 
-
+\newpage
 
 
 

@@ -17,12 +17,18 @@ library(dplyr)
 library(data.table)
 library(RColorBrewer)
 library(ggpubr)
+library(scales)
+library(here)
+library(kableExtra)
+library(webshot)
+library(webshot2)
 
 #### Reading files ####
 ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
 world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
 life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
 vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
+deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
 
 ## CREATE FIGURE 1
 ghs_data <- ghs_data %>%
@@ -159,3 +165,24 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
 
 ggsave("outputs/data/Voter_Data.png", width = 10, height = 8)
 
+
+## CREATE TABLE 1
+
+# Assign column names
+colnames(deaths) <- c("State", "Death_Rate")
+
+# Rank the states based on death rate
+deaths <- deaths[order(-deaths$Death_Rate), ]
+deaths$Rank <- 1:nrow(deaths)
+
+# Create the table
+table <- head(data.frame(Rank = deaths$Rank, State = deaths$State, Deaths = deaths$Death_Rate), 10)
+
+# Print the table using kableExtra
+kable_img <- kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)", align = "c") %>%
+  kable_styling(full_width = FALSE)
+
+save_kable(kable_img, "outputs/data/table.html")
+
+# Capture the table as an image
+webshot::webshot("outputs/data/table.html", "outputs/data/table.png")

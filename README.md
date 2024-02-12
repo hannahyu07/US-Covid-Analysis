@@ -17,7 +17,7 @@ The repo is structured as:
 * `/inputs/sketches`: Contains sketches for the datasets.
 * `/inputs/data`: Contains raw datasets.
 * `/inputs/llm`: Contains LLM usage.
-* `/outputs/graphs`: Contains graphs used in this paper.
+* `/outputs/graphs`: Contains graphs and tables used in this paper.
 * `/outputs/paper`: Documentation and final analysis report.
 * `/outputs/data`: Contains simulated datasets.
 * `/scripts`: R scripts used for data processing, replication and analysis.

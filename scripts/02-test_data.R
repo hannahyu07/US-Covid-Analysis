@@ -16,6 +16,9 @@ library(dplyr)
 library(data.table)
 library(RColorBrewer)
 library(ggpubr)
+library(scales)
+library(here)
+library(kableExtra)
 
 #### Test data ####
 ## Test simulated_life_data
