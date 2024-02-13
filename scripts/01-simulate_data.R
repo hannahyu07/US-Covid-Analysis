@@ -7,18 +7,9 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(sf)
-library(readxl)
 library(knitr)
-library(janitor)
-library(lubridate)
-library(dplyr)
-library(data.table)
-library(RColorBrewer)
-library(ggpubr)
-library(scales)
-library(here)
-library(kableExtra)
+
+
 
 #### Simulate data ####
 

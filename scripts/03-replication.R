@@ -10,7 +10,6 @@
 library(tidyverse)
 library(sf)
 library(readxl)
-library(knitr)
 library(janitor)
 library(lubridate)
 library(dplyr)
@@ -21,8 +20,6 @@ library(scales)
 library(here)
 library(kableExtra)
 library(webshot)
-library(webshot2)
-
 #### Reading files ####
 ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
 world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
