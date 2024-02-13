@@ -38,11 +38,19 @@ library(gt)
 
 #### Reading files ####
 
-ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
-world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
-life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
-vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
-deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
+ghs_data <- read_excel("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/GHS_index.xlsx")
+world_map <- st_read("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/world/World_Countries__Generalized_.shp")
+life_exp <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/life_table.csv", stringsAsFactors = FALSE)
+vote_share <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/Vote_share_2020_data.csv", stringsAsFactors = FALSE)
+deaths <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/covid-19-death-rates.csv", stringsAsFactors = FALSE)
+
+
+
+# ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+# world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
+# life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+# vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
+# deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
 
 
 ```
@@ -52,46 +60,10 @@ deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAs
 
 *This reproduction was performed after a replication on the Social Science Reproduction platform: ****[link here](https://www.socialsciencereproduction.org/reproductions/c35e8e98-762d-4c00-a1a3-544ed0b2008d/index)***
 
-# Data {#sec-data}
 
+@fig-GHS allows us to visualize the Global Health Security (GHS) Index which is designed to assess a country's capabilities to prevent, detect, and respond to significant infectious disease outbreaks. A higher Global Health Security (GHS) Index score indicates a stronger health system capacity for pandemic readiness. The GHS Index assesses the readiness of countries for pandemics and other significant biological threat emergencies, using a comprehensive framework that includes measurements grouped into six broad categories: prevention, detection, response, health system capacity, compliance with international norms, and risk environment. Higher scores suggest that a country has a more robust health system capacity, with better capabilities to prevent, detect, respond to, and mitigate the spread of an epidemic.
 
-
-## Source
-
-The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. The data used by the paper was compiled from various sources such as the @data1, @data2, @data3, @data4, @data5, @data6, @data7, @data8, @data9, @data10, and @data11. Additionally, to address the original paper's lack of US COVID statistics and political party support data, we incorporated information from @citedata1 and [@citedata2]. The political party support data we utilized from @citedata1 was compiled from @data12. 
-
-@citedata1 discusses the long-term impacts of COVID-related school closures. From this source, we utilized the dataset on voting shares during the 2020 election by county.
-@citedata2 summarizes COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes. Our reproduction aims to fill these gaps and includes tables and graphs not presented in the original paper to support our findings.
-
-
-## Methodology
-
-This paper will replicate the data that was originally presented by @citearticle, as previously mentioned. We then transform the replication to our data analysis incorporating the COVID statistics and political party support data. We seek to use our initial replication and following own data analysis to provide a fresh part of the original paper, enhancing the with more data. Different from the original paper which spent a lot of time talking about how badly prepared the US was against other countries, We also specifically diverge our focus to the political and socioeconomic factors that impacted the US's COVID outcome.
-
-`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], `webshot` [@citewebshot], `webshot2` [@citewebshot2], `gt` [@citegt] and `scales` [@citeScales].  
-
-
-## Data cleaning
-
-From all the data provided from @citearticle, @citedata1, and @citedata2, we mainly utilize the @data3, @data8, @data12, and @citedata2. The data from @citearticle are quite organized and do not require excessive cleaning for us to proceed. 
-
-Since we aim to analyze people's political preferences on a state level and the data we collected from @data12 is on a county level, we create a new data frame "vote_data_by_state" to summarize all the votes by state. We utilize the "group_by" function to form new variables on a state level. We calculated each the sum of the total votes, total Republican party votes, total Democratic party votes, and total vote difference between the two parties by county and created new variables that calculate the sum of each of these. We also create variables on the average percentage of votes each party receives and the difference by each state.
-
-To find the total number of votes in the Top 10 states with the highest proportion of Republican votes, we create another new data frame "sorted_states" from the "vote_data_by_state" data frame. We include a new variable "proportion_republican" that calculates the proportion of votes the Republican party receives from each state and orders the states by the highest proportion of Republican votes. 
-The data from @data2 does not have column names for each column. To retrieve data by column we assigned column names "State" and "Death_Rate" to the variables of interest. And then, to find the top 10 states with the highest death rates, we ranked the states based on death rate. 
-Lastly, to create the final figure that incorporates the COVID death rate and people's political preference by state, we merged the two data from @data12 and @citedata2. And subsequently did our work from there. 
-
-
-## Data Measurement
-
-### Measurement Techniques
-
-Manual Data Extraction involved careful review of reports and tables to ensure accurate data capture, particularly for datasets like life expectancy where this meticulous approach was paramount; this was coupled with Standardization and Adjustment processes where excess death data and age-standardized excess death rates underwent significant processing, including the comparison of observed deaths during the pandemic to expected deaths based on historical trends, with adjustments made for the age distribution of the population; concurrently, Geospatial Data Handling was employed for mapping the GHS Index scores, utilizing Geographic Information Systems (GIS) to visually represent pandemic preparedness across various countries, and this was complemented by Real-Time Data Aggregation, which entailed aggregating COVID-19 death data in real-time from authoritative sources such as the Johns Hopkins University Dashboard, necessitating continuous data monitoring and updates to maintain accuracy and relevance.
-
-### Adjustments and Considerations
-
-Accounting for underreporting through the measurement of excess deaths provides a more comprehensive view of the pandemic's impact by capturing deaths that may have been missed or misclassified as COVID-19, while the process of age standardization adjusts these excess death rates to a standard age distribution, enabling meaningful comparisons between countries with varying demographic profiles. However, the analysis had to navigate challenges associated with varying data quality and availability across different countries, especially given the diverse COVID-19 reporting standards and testing capacities. Moreover, the study also acknowledges the significant influence of political and social factors on the pandemic's outcomes, which, despite being more challenging to quantify, are essential for a holistic understanding of the pandemic's impact.
-
+Conversely, a lower GHS Index score implies weaker health system capacities, suggesting that the country may be less prepared to handle pandemics and other significant biological threats. Lower scores indicate deficiencies in one or more of the critical areas assessed by the Index, which could potentially hinder the country's ability to effectively manage and control the spread of infectious diseases.
 
 ```{r}
 #| echo: false
@@ -124,17 +96,81 @@ ggplot(data = world_ghs) +
 ```
 
 
+# Data {#sec-data}
+
+
+## Source
+
+The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. The data used by the paper was compiled from various sources such as the @data1, @data2, @data3, @data4, @data5, @data6, @data7, @data8, @data9, @data10, and @data11. Additionally, to address the original paper's lack of US COVID statistics and political party support data, we incorporated information from @citedata1 and [@citedata2]. The political party support data we utilized from @citedata1 was compiled from @data12. 
+
+@citedata1 discusses the long-term impacts of COVID-related school closures. From this source, we utilized the dataset on voting shares during the 2020 election by county.
+@citedata2 summarizes COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes. Our reproduction aims to fill these gaps and includes tables and graphs not presented in the original paper to support our findings.
+
+
+## Methodology
+
+This paper will replicate the data that was originally presented by @citearticle, as previously mentioned. We then transform the replication to our data analysis incorporating the COVID statistics and political party support data. We seek to use our initial replication and following own data analysis to provide a fresh part of the original paper, enhancing the with more data. Different from the original paper which spent a lot of time talking about how badly prepared the US was against other countries, We also specifically diverge our focus to the political and socioeconomic factors that impacted the US's COVID outcome.
+
+`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], `webshot` [@citewebshot], `webshot2` [@citewebshot2], `gt` [@citegt] and `scales` [@citeScales].  
+
+
+## Data cleaning
+
+From all the data provided from @citearticle, @citedata1, and @citedata2, we mainly utilize  @data3, @data8, @data12, and @citedata2. The data from @citearticle is well-organized and require minimal cleaning for analysis.
+
+The data collected from @data12 is at the county level as depicted on @tbl-sample. However, since our analysis focuses on people's political preferences at the state level, we create a new data frame called "vote_data_by_state" to aggregate voting data by state. We utilize the "group_by" function to generate new variables at the state level, calculating the total votes, total Republican party votes, total Democratic party votes, and the total vote difference between the two parties by county. Additionally, We also create variables for the average percentage of votes each party receives and the difference by each state.
+
+To determine the total number of votes in the Top 10 states with the highest proportion of Republican votes, we create another new data frame called "sorted_states" from the "vote_data_by_state" data frame. We include a new variable "proportion_republican" that calculates the proportion of votes the Republican party receives from each state and orders the states by the highest proportion of Republican votes. 
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-sample
+#| tbl-cap: Sample of Vote Share Data
+#| warning: false
+
+# Take a sample of the data (let's say the first 5 rows)
+vote_share_sample <- head(vote_share, 5)
+
+# Print the sample table
+kable(vote_share_sample, 
+      format = "markdown", 
+      col.names = c("State Name", "County FIPS", "County Name", "Votes GOP", "Votes DEM", "Total Votes", "Difference", "Percentage GOP", "Percentage DEM", "Percentage Point Difference")
+)
+
+
+```
+
+
+
+
+The data from @data2 lacks column names for each column. To retrieve data by column, we assign column names "State" and "Death_Rate" to the variables of interest. Subsequently, to find the top 10 states with the highest death rates, we rank the states based on death rate. Lastly, to create the final figure that incorporates the COVID death rate and people's political preferences by state, we merge the two datasets from @data12 and @citedata2 and proceed with our analysis. 
+
+
+## Data Measurement
+
+### Measurement Techniques
+
+Manual Data Extraction involved careful review of reports and tables to ensure accurate data capture, particularly for datasets like life expectancy where this meticulous approach was paramount; this was coupled with Standardization and Adjustment processes where excess death data and age-standardized excess death rates underwent significant processing, including the comparison of observed deaths during the pandemic to expected deaths based on historical trends, with adjustments made for the age distribution of the population; concurrently, Geospatial Data Handling was employed for mapping the GHS Index scores, utilizing Geographic Information Systems (GIS) to visually represent pandemic preparedness across various countries, and this was complemented by Real-Time Data Aggregation, which entailed aggregating COVID-19 death data in real-time from authoritative sources such as the Johns Hopkins University Dashboard, necessitating continuous data monitoring and updates to maintain accuracy and relevance.
+
+### Adjustments and Considerations
+
+Accounting for underreporting through the measurement of excess deaths provides a more comprehensive view of the pandemic's impact by capturing deaths that may have been missed or misclassified as COVID-19, while the process of age standardization adjusts these excess death rates to a standard age distribution, enabling meaningful comparisons between countries with varying demographic profiles. However, the analysis had to navigate challenges associated with varying data quality and availability across different countries, especially given the diverse COVID-19 reporting standards and testing capacities. Moreover, the study also acknowledges the significant influence of political and social factors on the pandemic's outcomes, which, despite being more challenging to quantify, are essential for a holistic understanding of the pandemic's impact.
+
+
+
+
 # Results
 
-Our results are summarized in the following figures. @fig-ELE illustrates the trend of life expectancy at birth across different racial groups over time. @tbl-life-exp provides a more detailed breakdown of the life expectancy before and during COVID for Asian, American Indian, Alaska Native and other racial communities. 
 
-@fig-GHS also allows us to visualize the Global Health Security (GHS) Index which is designed to assess a country's capabilities to prevent, detect, and respond to significant infectious disease outbreaks. A higher Global Health Security (GHS) Index score indicates a stronger health system capacity for pandemic readiness. The GHS Index assesses the readiness of countries for pandemics and other significant biological threat emergencies, using a comprehensive framework that includes measurements grouped into six broad categories: prevention, detection, response, health system capacity, compliance with international norms, and risk environment. Higher scores suggest that a country has a more robust health system capacity, with better capabilities to prevent, detect, respond to, and mitigate the spread of an epidemic.
+Our results are summarized in the following figures. @fig-ELE illustrates the trend of life expectancy at birth across different racial groups over time. Unfortunately, due to the unavailability of data over time for Asian, American Indian, and Alaska Native communities, they have been excluded from the time series graph. @tbl-life-exp provides a more detailed breakdown of the life expectancy before and during COVID for Asian, American Indian, Alaska Native and other racial communities. 
 
-Conversely, a lower GHS Index score implies weaker health system capacities, suggesting that the country may be less prepared to handle pandemics and other significant biological threats. Lower scores indicate deficiencies in one or more of the critical areas assessed by the Index, which could potentially hinder the country's ability to effectively manage and control the spread of infectious diseases.
+An intriguing observation from @fig-ELE is the consistently higher life expectancy among Hispanic individuals compared to other groups, even amidst the challenges posed by COVID-19. On the other hand, Black individuals have consistently exhibited lower life expectancy, which further declined notably in 2021, reaching just over 70.8 years old. The life expectancy trends of white people and all other races and origins remain close together throughout the 14 years, with minimum variance. 
 
-Unfortunately, due to the unavailability of data over time for Asian, American Indian, and Alaska Native communities, they have been excluded from the time series graph.
+While all racial groups experienced declines in their average life expectancy, the declines vary greatly. The life expectancy for White individuals decreased from 78.8 to 76.4 years old from pre-pandemic levels in 2019 to 2021, while for Hispanic individuals, it dropped by 4.2 years, and for Black individuals, it declined by 4 years during the same period. Our data aligns with the findings of @andrasfay_goldman_2022, which states that the Black and Hispanic populations experienced twice as much life expectancy decrease as the white population."
 
-An intriguing observation is the consistently higher life expectancy among Hispanic individuals compared to other groups, even amidst the challenges posed by COVID-19. On the other hand, Black individuals l have consistently exhibited lower life expectancy, which further declined notably in 2021, reaching just over 70.8 years old. The life expectancy trends of white people and all other races and origins remain close together throughout the 14 years, with minimum variance. Specifically, the life expectancy for White individuals decreased from 78.8 to 76.4 years old from pre-pandemic levels in 2019 to 2021, while for Hispanic individuals, it dropped by 4.2 years, and for Black individuals, it declined by 4 years during the same period.
+
 
 ```{r fig.width=7, fig.height=3.5}
 #| echo: false
@@ -142,7 +178,6 @@ An intriguing observation is the consistently higher life expectancy among Hispa
 #| label: fig-ELE
 #| fig-cap: Estimates of Life Expectancy at Birth, by Race 2006-2021
 #| warning: false
-
 
 # Reshape the data if necessary
 life_exp_melted <- reshape(
@@ -346,12 +381,11 @@ life_exp_gt
 
 @fig-CLE serves as a valuable addition to our previous analysis with the inclusion of Asians, American Indians, and Alaska Natives during the critical period from 2019 to 2021. With these additional ethnic categories, we can discern that American Indians and Alaska Natives experienced significant impacts from the pandemic, with a decrease of 4.7 years in the first year and 1.9 years in the second year, totaling 6.6 years.
 
-With a chart that depicts the change in life expectancy each year by ethnicity, we can better gain a more comprehensive understanding of the impact of COVID by ethnicity. While the declines in life expectancy are smaller in magnitude from 2020 to 2021, they are notably minimal for Asians and Hispanics, with reductions of -0.1 and -0.2 years respectively. (Insert some sources tmrw) 
+With a chart that depicts the change in life expectancy each year by ethnicity, we can better gain a more comprehensive understanding of the impact of COVID by ethnicity. While the declines in life expectancy are smaller in magnitude from 2020 to 2021, they are notably minimal for Asians and Hispanics, with reductions of -0.1 and -0.2 years respectively. 
 
-Numerous sources have indicated a correlation between a state's political affiliation and its handling of COVID issues (sources to be inserted tomorrow). To testify to the claim, we collected the voting data for each of the 50 states for the 2020 presidential election. We then selected the ten states with the highest proportions of Republican votes. These voting patterns are visualized in Figure @fig-Vote, where red symbols represent Republican votes and blue symbols represent Democratic votes. Among the top ten states, Tennessee recorded the highest total number of votes, while Wyoming boasted the highest proportion of Republican votes.
+Various studies have confirmed the existence of correlation between a state's political affiliation and its handling of COVID issues (@datz_2022). To testify to the claim, we collected the voting data for each of the 50 states for the 2020 presidential election. We then selected the ten states with the highest proportions of Republican votes. These voting patterns are visualized in Figure @fig-Vote, where red symbols represent Republican votes and blue symbols represent Democratic votes. Among the top ten states, Tennessee recorded the highest total number of votes, while Wyoming boasted the highest proportion of Republican votes.
 
-Given the variation in population sizes among states, direct comparisons of COVID-19 case numbers are inherently flawed. As an alternative, we employed death rates per 100,000 people as a metric for evaluating each state's COVID preparedness and situation. We then produced @tbl-deaths that rank the top ten states with the highest death rates from COVID-19 per 100,000 people to examine the potential correlation between party preferences and COVID-related deaths. Notably, We found that six of the ten top Republican states made a reappearance in the top death rates table; these states are Oklahoma, West Virginia, Arkansas, Alabama, Tennessee, and Kentucky. 
-(Insert quotes about the republican party and COVID tmrw)
+Given the variation in population sizes among states, direct comparisons of COVID-19 case numbers are inherently flawed. As an alternative, we employed death rates per 100,000 people as a metric for evaluating each state's COVID preparedness and situation. We then produced @tbl-deaths that rank the top ten states with the highest death rates from COVID-19 per 100,000 people to examine the potential correlation between party preferences and COVID-related deaths. Notably, We found that six of the ten top Republican states made a reappearance in the top death rates table; these states are Oklahoma, West Virginia, Arkansas, Alabama, Tennessee, and Kentucky. The higher mortality rates observed in Republican-leaning states may be attributed to their preference for less stringent measures compared to Democratic-leaning states, which tend to favor stricter measures (@vandusky-allen_shvetsova_2021). 
 
 Following our previous analysis regarding individuals' political affiliations, we have developed Figure @fig-deaths-rates-votes, which encompasses all 50 states of the US along with their political leanings based on which party garnered the majority votes. This information is juxtaposed against their respective COVID-19 death rates. 
 
