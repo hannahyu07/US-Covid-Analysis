@@ -1,4 +1,4 @@
-## "Political Polarization, Public Trust, and Healthcare Disparities: Unraveling COVID-19's Impact and Future Preparedness
+## Political Polarization, Public Trust, and Healthcare Disparities: Unraveling COVID-19's Impact and Future Preparedness
 
 **Statement on LLM Usage: Aspects of the code and paper were written with the help of ChatGPT. Some of the data interpretation, introduction, abstract and discussion were also written using ChatGPT. The entire chat history is available in `inputs/llms/usage.txt`**
 
