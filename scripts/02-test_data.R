@@ -2,7 +2,7 @@
 # Purpose: Tests the Simulated Data
 # Author: Adrian Ly
 # Date: 9 February 2024 
-# Contact: adrian.ly@mail.utoronto.ca, realhannah.yu@mail.utoronto.ca
+# Contact: adrian.ly@mail.utoronto.ca, realhannah.yu@mail.utoronto.ca, s.goel@mail.utoronto.ca
 # License: MIT
 
 #### Workspace setup ####

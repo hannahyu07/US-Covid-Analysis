@@ -2,7 +2,7 @@
 # Purpose: Paper Replication
 # Author: Adrian Ly, Hannah Yu
 # Date: 9 February 2024 
-# Contact: adrian.ly@mail.utoronto.ca
+# Contact: adrian.ly@mail.utoronto.ca, s.goel@mail.utoronto.ca
 # License: MIT
 
 
