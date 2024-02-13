@@ -33,15 +33,22 @@ library(ggpubr)
 library(scales)
 library(here)
 library(kableExtra)
+library(gt)
 
 
 #### Reading files ####
 
-ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
-world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
-life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
-vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
-deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
+# ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+# world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
+# life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+# vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
+# deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
+
+ghs_data <- read_excel("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/GHS_index.xlsx")
+world_map <- st_read("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/world/World_Countries__Generalized_.shp")
+life_exp <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/life_table.csv", stringsAsFactors = FALSE)
+vote_share <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/Vote_share_2020_data.csv", stringsAsFactors = FALSE)
+deaths <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/covid-19-death-rates.csv", stringsAsFactors = FALSE)
 
 
 ```
@@ -57,7 +64,7 @@ deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAs
 
 ## Source
 
-The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. Additionally, to address the original paper's lack of US COVID statistics and political party support data, we incorporated information from @citedata1 and @citedata2.
+The datasets utilized in this paper were mainly obtained from the `original paper` [@citearticle]. The data used by the paper was compiled by various sources such as the @data1, @data2, @data3, @data4, @data5, @data6, @data7, @data8, @data9, @data10, and @data11. Additionally, to address the original paper's lack of US COVID statistics and political party support data, we incorporated information from @citedata1 and @citedata2.The political party support data we utilized from @citedata1 was compiled from @data12. 
 
 @citedata1 discusses the long-term impacts of COVID-related school closures. From this source, we utilized the dataset on voting shares during the 2020 election by county.
 @citedata2 summarizes COVID-19 death rates in the United States as of March 2023, organized by state. Analyzing results from both datasets allows us to explore the relationship between political affiliation and COVID-19 outcomes. Our reproduction aims to fill these gaps and includes tables and graphs not presented in the original paper to support our findings.
@@ -65,11 +72,25 @@ The datasets utilized in this paper were mainly obtained from the `original pape
 
 ## Methodology
 
-`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], `webshot` [@citewebshot], `webshot2` [@citewebshot2], and `scales` [@citeScales].  
+This paper will to replicate the data that was originally presented by @citearticle, as previously mentioned. We then transform the replication to our own data analysis incorporating the COVID statistics adn political party support data. We seek to use our initial replication and following own data anlysis to provide a fresh part of the original paper, enhancing the with more data. Different from the original paper that spend a lot of time talking about how badly prepared US was against other country, We also specifically diverge our focus of the political and socioeconomic factors that impacted US's COVID outcome.
+
+`R` [@citeR] was the language and environment used for the bulk of this analysis, alongside `tidyverse` [@citeTidyVerse], `sf` [@citeSF], `readxl` [@citeReadXL], `knitr` [@citeKnitR], `janitor` [@citeJanitor], `lubridate` [@citeLubridate], `dplyr` [@citeDplyr], `data.table` [@citeDataTable], `RColorBrewer` [@citeRColorBrewer], `ggpubr` [@citeggpubr], `ggplot2` [@citeggplot], `here` [@citeHere], `kableExtra` [@citeKableExtra], `webshot` [@citewebshot], `webshot2` [@citewebshot2], 'gt' [@citegt] and `scales` [@citeScales].  
+
+
+## Data cleaning
+From all the data provided from @citearticle, @citedata1, and @citedata2, we mainly utilize the @data3, @data8, @data12, and @citedata2. The data from @citearticle are quite organized and do not require excessive cleaning for us to proceed. 
+
+Since we aim to analyze people's political preference on a state level and the data we collected from @data12 is on a county level, we create a new dataframe "vote_data_by_state" to summarize all the votes by state. We utilize the "group_by" function to form new variables on a state level. We calculate each of the sum of the total votes, total Republican party votes, total Democratic party votes, total vote difference between the two parties by county and created new variables that calculate the sum of each of these. We also create variables on the average percentage of vote each party receives and the difference by each state.
+
+To find the total number of votes in Top 10 states with highest proportion of Republican votes, we create another new dataframe "sorted_states" from the "vote_data_by_state" dataframe. We include a new variable "proportion_republican" that calculates the proportion of votes the Republican party receives from each state and ordered the states by the highest proportion of Republican votes. 
+
+@datadata2 does not have column names for each column.To retrieve data by column for we assigned column names "State" and "Death_Rate" to the variables of interests. And then, to find the top 10 states with highest death rates, we ranked the states based on death rate. 
+
+Lastly, to create the final figure that incorporates the COVID death rate and people's political preference by state, we merged the two data from @data12 and @citedata2. And subsequently did our work from there. 
+
 
 ## Data Measurement
 
-## Data cleaning
 
 ## Data Visualization
 
@@ -271,7 +292,6 @@ ggplot(plot_data_long, aes(x = state_name, y = votes, fill = party)) +
 
 ```
 
-
 ```{r}
 #| echo: false
 #| eval: true
@@ -289,9 +309,16 @@ deaths$Rank <- 1:nrow(deaths)
 # Create the table
 table <- head(data.frame(Rank = deaths$Rank, State = deaths$State, Deaths = deaths$Death_Rate), 10)
 
-# Print the table using kableExtra
-kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)", align = "c") %>%
-  kable_styling(full_width = FALSE)
+# Create a gt table
+table_gt <- gt(table) %>%
+  tab_header(
+    title = "Top 10 States with Highest Death Rates from COVID-19 (per 100,000 people)"
+  )
+
+# Print the gt table
+table_gt
+
+
 
 ```
 
@@ -301,16 +328,20 @@ kable(table, caption = "Top 10 States with Highest Death Rates from COVID-19 (pe
 #| label: tbl-life-exp
 #| tbl-cap: Life Expectancy by Race (2019-2021)
 #| warning: false
+
 # Filter the data for the years 2019 to 2021
 life_exp_subset <- life_exp_melted[life_exp_melted$year_id >= 2019 & life_exp_melted$year_id <= 2021, ]
-
 # Pivot the data to create a table and rename columns
 life_exp_table <- reshape2::dcast(life_exp_subset, year_id ~ race, value.var = "life_exp")
 colnames(life_exp_table) <- c("Year", "All races and origins", "Hispanic", "AIAN", "Asian", "Black", "White")
+# Create a gt table
+life_exp_gt <- gt(life_exp_table, rowname_col = "Race") %>%
+  tab_header(
+    title = "Life Expectancy by Race (2019-2021)"
+  )
+# Print the gt table
+life_exp_gt
 
-# Create a table using knitr::kable
-
-kable(life_exp_table, col.names = c("Year", "All Races and Origins", "Hispanic", "AIAN", "Asian", "Black", "White"))
 
 
 ```
@@ -327,6 +358,7 @@ Given the variation in population sizes among states, direct comparisons of COVI
 Following from our previous analysis regarding individuals' political affiliations, we have developed Figure @fig-deaths-rates-votes, which encompasses all 50 states of the US along with their political leanings based on which party garnered the majority votes. This information is juxtaposed against their respective COVID-19 death rates. 
 
 While we cannot make any definitive assertions about stark differences, we do observe that the Republican-leaning states are slightly more clustered around higher death rates ranging from  350 to 450 deaths, while the Democratic-leaning states appear to be more evenly distributed, and notably one Democratic-leaning state has the lowest death rate. An intriguing observation is that although many Republican-leaning states demonstrate higher COVID death rates, it is noteworthy that Arizona, typically considered a Democratic-leaning state, records the highest death rate among all states.
+
 
 ```{r}
 #| echo: false
