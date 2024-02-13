@@ -2,7 +2,6 @@
 title: "How did local health infrastructure and socio-political factors within different states and counties in the United States affect the disparities in COVID-19 outcomes, and what lessons can be learned for more targeted public health preparedness and response strategies in future pandemics?"
 author: 
   - Adrian Ly
-  - Sakhil Goel
   - Hannah Yu
 thanks: "Code and data are available at: https://github.com/hannahyu07/US-Covid-Analysis.git"
 date: today
