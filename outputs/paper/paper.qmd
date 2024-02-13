@@ -37,16 +37,11 @@ library(gt)
 
 #### Reading files ####
 
-# ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
-# world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
-# life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
-# vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
-# deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
-ghs_data <- read_excel("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/GHS_index.xlsx")
-world_map <- st_read("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/world/World_Countries__Generalized_.shp")
-life_exp <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/life_table.csv", stringsAsFactors = FALSE)
-vote_share <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/Vote_share_2020_data.csv", stringsAsFactors = FALSE)
-deaths <- read.csv("C:/Users/35911/Documents/US-Covid-Analysis/inputs/data/covid-19-death-rates.csv", stringsAsFactors = FALSE)
+ghs_data <- read_excel(here::here("inputs/data/GHS_index.xlsx"))
+world_map <- st_read(here::here("inputs/data/world/World_Countries__Generalized_.shp"))
+life_exp <- read.csv(here::here("inputs/data/life_table.csv"), stringsAsFactors = FALSE)
+vote_share <- read.csv(here::here("inputs/data/Vote_share_2020_data.csv"), stringsAsFactors = FALSE)
+deaths <- read.csv(here::here("inputs/data/covid-19-death-rates.csv"), stringsAsFactors = FALSE)
 
 
 ```
