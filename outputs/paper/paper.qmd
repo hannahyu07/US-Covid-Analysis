@@ -150,6 +150,19 @@ The data from @data2 lacks column names for each column. To retrieve data by col
 
 ## Data Measurement
 
+The transformation of real-world phenomena into quantifiable data points in our dataset is influenced by various factors, leading to inherent limitations in our  measurements for life expectancy rates, and political affiliation.
+
+Our measurement for COVID death rates is drawn from a accumulated dataset last updated until March 2023. This temporal constraint means we would not be aware of the fluctuations of death rates over time, particularly during the peak of the pandemic in 2020. The data's primarily reliance on the reported statistics from hospitals, clinics, testing centres, and laboratories may introduces bias as excludes uncounted deaths from COVID. Especially during the critical period of health facilities capacity constraints,many individuals died outside of medical facilities without being documented. Therefore, our measurements for COVID death rates are only accounted for the documented death from COVID.
+
+In addition,it's important to note that the death rate presented here reflects the entire population of a state. However, COVID-19 disproportionately affects older individuals compared to younger adults in the prime of their lives. As a result, this data does not capture the effect of COVID across different age groups. Instead, it only offers a general overview the state's population. In summary, we are unable to provide detailed insights into age-specific or temporal variations based on this dataset. 
+
+
+Similarly, our measurement of life expectancy suffer from the demographic limitations. Even though we categorize life expectancy by race, the absence of an age breakdown restricts us discern impacts across different age groups. Moreover, delays in reporting deaths undermine the timeliness and accuracy of our data, potentially skewing our understanding of population health trends.
+
+Our measurement for each state's political preference is calculated from the 2020 election votes. There may be many scenarios that prevented eligible voters from voting. However, we are only able to assess the the state's political preference based on the people who voted, thereby potentially introducing selection bias. Additionally, issues such as ballot loss or voter disenfranchisement further compound the reliability of our measurements.
+
+
+
 ### Measurement Techniques
 
 Manual Data Extraction involved careful review of reports and tables to ensure accurate data capture, particularly for datasets like life expectancy where this meticulous approach was paramount; this was coupled with Standardization and Adjustment processes where excess death data and age-standardized excess death rates underwent significant processing, including the comparison of observed deaths during the pandemic to expected deaths based on historical trends, with adjustments made for the age distribution of the population; concurrently, Geospatial Data Handling was employed for mapping the GHS Index scores, utilizing Geographic Information Systems (GIS) to visually represent pandemic preparedness across various countries, and this was complemented by Real-Time Data Aggregation, which entailed aggregating COVID-19 death data in real-time from authoritative sources such as the Johns Hopkins University Dashboard, necessitating continuous data monitoring and updates to maintain accuracy and relevance.
@@ -157,7 +170,6 @@ Manual Data Extraction involved careful review of reports and tables to ensure a
 ### Adjustments and Considerations
 
 Accounting for underreporting through the measurement of excess deaths provides a more comprehensive view of the pandemic's impact by capturing deaths that may have been missed or misclassified as COVID-19, while the process of age standardization adjusts these excess death rates to a standard age distribution, enabling meaningful comparisons between countries with varying demographic profiles. However, the analysis had to navigate challenges associated with varying data quality and availability across different countries, especially given the diverse COVID-19 reporting standards and testing capacities. Moreover, the study also acknowledges the significant influence of political and social factors on the pandemic's outcomes, which, despite being more challenging to quantify, are essential for a holistic understanding of the pandemic's impact.
-
 
 
 
