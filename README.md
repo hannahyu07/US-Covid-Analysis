@@ -1,6 +1,6 @@
 ## How did local health infrastructure and socio-political factors within different states and counties in the United States affect the disparities in COVID-19 outcomes, and what lessons can be learned for more targeted public health preparedness and response strategies in future pandemics?
 
-**Statement on LLM Usage: Aspects of the code and paper were written with the help of ChatGPT. Some of the data interpretation and discussion were also written using ChatGPT. The entire chat history is available in `inputs/llms/usage.txt`**
+**Statement on LLM Usage: Aspects of the code and paper were written with the help of ChatGPT. Some of the data interpretation, introduction, abstract and discussion were also written using ChatGPT. The entire chat history is available in `inputs/llms/usage.txt`**
 
 ## Overview
 
