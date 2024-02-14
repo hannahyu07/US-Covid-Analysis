@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Simulate Data of Interest
-# Author: Adrian Ly, Hannah Yu
+# Author: Adrian Ly, Hannah Yu, Sakhil Goel
 # Date: 9 February 2024 
 # Contact: adrian.ly@mail.utoronto.ca, realhannah.yu@mail.utoronto.ca, s.goel@mail.utoronto.ca
 # License: MIT
@@ -10,7 +10,6 @@ library(tidyverse)
 library(knitr)
 
 
-
 #### Simulate data ####
 
 # Simulate the average life expectancy of people by ethnicity
@@ -18,7 +17,7 @@ library(knitr)
 set.seed(123)
 
 # Define the years
-years <- 2006:2021
+years <- seq(2006, 2021)
 
 # Define life expectancy ranges for each group
 life_expectancy_ranges <- list(
@@ -30,27 +29,27 @@ life_expectancy_ranges <- list(
   "Non-Hispanic White" = c(77, 81)
 )
 
-# Generate the dataset
-data <- matrix(NA, nrow = length(years), ncol = length(life_expectancy_ranges) + 1)
-colnames(data) <- c("year_id", names(life_expectancy_ranges))
-data[, 1] <- years
-
-for (i in 1:length(years)) {
-  for (group in names(life_expectancy_ranges)) {
-    if (group == "All") {
-      life_expectancy <- runif(1, life_expectancy_ranges[[group]][1], life_expectancy_ranges[[group]][2])
-    } else {
-      life_expectancy <- runif(1, life_expectancy_ranges[[group]][1], life_expectancy_ranges[[group]][2])
-    }
-    data[i, which(colnames(data) == group)] <- round(life_expectancy, 1)
-  }
+# Define function to generate random numbers within a range
+generate_random_number <- function(range, n) {
+  return(round(runif(n, min = range[1], max = range[2]), 1))
 }
 
-# Save the dataset to a CSV file
-write.csv(data, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
+# Generate life expectancy data
+simulated_life_exp <- tibble(
+  year = years,
+  All = generate_random_number(c(77, 80), n = length(years)),
+  Hispanic = generate_random_number(c(80, 83), n = length(years)),
+  Non_Hispanic_AIAN = generate_random_number(c(65, 72), n = length(years)),
+  Non_Hispanic_Asian = generate_random_number(c(83, 87), n = length(years)),
+  Non_Hispanic_Black = generate_random_number(c(70, 76), n = length(years)),
+  Non_Hispanic_White = generate_random_number(c(77, 81), n = length(years))
+)
 
-# Print the dataset to the console
-print(data)
+print(head(simulated_life_exp))
+
+# Save the dataset to a CSV file
+write.csv(simulated_life_exp, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
+
 
 
 # Simulate the Vote at Each State
