@@ -71,6 +71,9 @@ simulated_life_exp$Non_Hispanic_Black |> max() <= 76
 simulated_life_exp$Non_Hispanic_White |> min() >= 77
 simulated_life_exp$Non_Hispanic_White |> max() <= 81
 
+# Check if all values are numeric
+numeric_check <- all(sapply(simulated_life_exp, is.numeric))
+print(paste("Numeric Check:", ifelse(numeric_check, "Passed", "Failed")))
 
 # Save the dataset to a CSV file
 write.csv(simulated_life_exp, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
@@ -119,6 +122,22 @@ expected_num_cols <- 8
 test_num_cols <- num_cols == expected_num_cols
 test_num_cols
 
+# Check for missing values
+if (!anyNA(data2)) {
+  print("Test passed: No missing values found.")
+} else {
+  print("Test failed: Missing values detected.")
+}
+
+# Check for all 50 states
+num_unique_states <- length(unique(data2$state_name))
+expected_num_states <- 50
+
+if (num_unique_states == expected_num_states) {
+  print("Test passed: Data includes data for all 50 states.")
+} else {
+  print("Test failed: Data does not include data for all 50 states.")
+}
 
 # Write simulated vote data to CSV
 write.csv(simulated_vote_data, "outputs/data/simulated_vote_data.csv", row.names = FALSE)
