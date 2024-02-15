@@ -61,9 +61,9 @@ num_unique_states <- length(unique(data2$state_name))
 expected_num_states <- 50
 
 if (num_unique_states == expected_num_states) {
-  print("Test 4 passed: Data includes data for all 50 states.")
+  print("Test 3 passed: Data includes data for all 50 states.")
 } else {
-  print("Test 4 failed: Data does not include data for all 50 states.")
+  print("Test 3 failed: Data does not include data for all 50 states.")
 }
 
 

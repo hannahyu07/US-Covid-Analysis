@@ -19,16 +19,6 @@ set.seed(123)
 # Define the years
 years <- seq(2006, 2021)
 
-# Define life expectancy ranges for each group
-life_expectancy_ranges <- list(
-  "All" = c(77, 80),
-  "Hispanic" = c(80, 83),
-  "Non-Hispanic AIAN" = c(65, 72),
-  "Non-Hispanic Asian" = c(83, 87),
-  "Non-Hispanic Black" = c(70, 76),
-  "Non-Hispanic White" = c(77, 81)
-)
-
 # Define function to generate random numbers within a range
 generate_random_number <- function(range, n) {
   return(round(runif(n, min = range[1], max = range[2]), 1))
@@ -37,6 +27,7 @@ generate_random_number <- function(range, n) {
 # Generate simulated life expectancy data
 simulated_life_exp <- tibble(
   year = years,
+  # Every group has a different life expectancy range
   All = generate_random_number(c(77, 80), n = length(years)),
   Hispanic = generate_random_number(c(80, 83), n = length(years)),
   Non_Hispanic_AIAN = generate_random_number(c(65, 72), n = length(years)),
@@ -46,6 +37,40 @@ simulated_life_exp <- tibble(
 )
 
 print(head(simulated_life_exp))
+
+# Test that there are 7 columns
+num_cols <- ncol(simulated_life_exp)
+expected_num_cols <- 7
+test_num_cols <- num_cols == expected_num_cols
+test_num_cols
+
+# Test that there are 16 years
+simulated_life_exp$year |> length() == 16
+
+# Test that All is between 77 and 80
+simulated_life_exp$All |> min() >= 77
+simulated_life_exp$All |> max() <= 80
+
+# Test that Hispanic is between 80 and 83
+simulated_life_exp$Hispanic |> min() >= 80
+simulated_life_exp$Hispanic |> max() <= 83
+
+# Test that Non_Hispanic_AIAN is between 65 and 72
+simulated_life_exp$Non_Hispanic_AIAN |> min() >= 65
+simulated_life_exp$Non_Hispanic_AIAN |> max() <= 72
+
+# Test that Non_Hispanic_Asian is between 83 and 87
+simulated_life_exp$Non_Hispanic_Asian |> min() >= 83
+simulated_life_exp$Non_Hispanic_Asian |> max() <= 87
+
+# Test that Non_Hispanic_Black is between 70 and 76
+simulated_life_exp$Non_Hispanic_Black |> min() >= 70
+simulated_life_exp$Non_Hispanic_Black |> max() <= 76
+
+# Test that Non_Hispanic_White is between 77 and 81
+simulated_life_exp$Non_Hispanic_White |> min() >= 77
+simulated_life_exp$Non_Hispanic_White |> max() <= 81
+
 
 # Save the dataset to a CSV file
 write.csv(simulated_life_exp, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
@@ -80,6 +105,20 @@ simulated_vote_data <- tibble(
 )
 
 print(head(simulated_vote_data))
+
+# Test that there are 50 states
+simulated_vote_data$state_name |> length() == 50
+
+# Test that total_votes is between 50000 and 1000000
+simulated_vote_data$total_votes |> min() >= 50000
+simulated_vote_data$total_votes |> max() <= 1000000
+
+# Test that there are 8 columns
+num_cols <- ncol(simulated_vote_data)
+expected_num_cols <- 8
+test_num_cols <- num_cols == expected_num_cols
+test_num_cols
+
 
 # Write simulated vote data to CSV
 write.csv(simulated_vote_data, "outputs/data/simulated_vote_data.csv", row.names = FALSE)
