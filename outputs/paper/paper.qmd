@@ -134,7 +134,7 @@ vote_share_sample <- head(vote_share, 5)
 # Print the sample table
 kable(vote_share_sample, 
       format = "markdown", 
-      col.names = c("State Name", "County FIPS", "County Name", "Votes GOP", "Votes DEM", "Total Votes", "Difference", "Percentage GOP", "Percentage DEM", "Percentage Point Difference")
+      col.names = c("State Name", "County  FIPS", "County Name", "Votes GOP", "Votes DEM", "Total Votes", "Differ- ence", "Percent- age GOP", "Percent- age DEM", "Percentage Point Difference")
 )
 
 
