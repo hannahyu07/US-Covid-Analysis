@@ -34,7 +34,7 @@ generate_random_number <- function(range, n) {
   return(round(runif(n, min = range[1], max = range[2]), 1))
 }
 
-# Generate life expectancy data
+# Generate simulated life expectancy data
 simulated_life_exp <- tibble(
   year = years,
   All = generate_random_number(c(77, 80), n = length(years)),
@@ -50,10 +50,13 @@ print(head(simulated_life_exp))
 # Save the dataset to a CSV file
 write.csv(simulated_life_exp, "outputs/data/simulated_life_exp.csv", row.names = FALSE)
 
+# Confirm file creation
+file.exists("outputs/data/simulated_life_exp.csv")
 
 
 # Simulate the Vote at Each State
 set.seed(123)
+
 # Define the state names
 state_names <- c(
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
@@ -64,35 +67,23 @@ state_names <- c(
   "Wisconsin", "Wyoming"
 )
 
-# Function to simulate vote data for a single state
-simulate_state_votes <- function() {
-  total_votes <- round(runif(1, 50000, 1000000))  # Simulate total votes (between 50,000 and 1,000,000)
-  votes_gop <- round(runif(1, 0.4 * total_votes, 0.6 * total_votes))  # Simulate GOP votes (between 40% and 60% of total votes)
-  votes_dem <- total_votes - votes_gop  # Calculate Democratic votes
-  diff <- votes_gop - votes_dem  # Calculate the difference between GOP and Democratic votes
-  per_gop <- runif(1, 0.4, 0.6)  # Simulate GOP vote share (between 40% and 60%)
-  per_dem <- 1 - per_gop  # Calculate Democratic vote share
-  per_point_diff <- abs(per_gop - per_dem)  # Calculate absolute difference in vote share
-  c(votes_gop, votes_dem, total_votes, diff, per_gop, per_dem, per_point_diff)
-}
+# Generate simulated vote data
+simulated_vote_data <- tibble(
+  state_name = rep(state_names, each = 1),
+  total_votes = round(runif(length(state_names), min = 50000, max = 1000000), 0),  # Simulate total votes (between 50,000 and 1,000,000)
+  votes_gop = round(runif(length(state_names), min = 0.4 * total_votes, max = 0.6 * total_votes), 0),  # Simulate GOP votes (between 40% and 60% of total votes)
+  votes_dem = (total_votes - votes_gop), # Calculate Democratic votes
+  diff = votes_gop - votes_dem , # Calculate the difference between GOP and Democratic votes
+  per_gop = round(votes_gop/total_votes, 2), # Simulate GOP vote share (between 40% and 60%)
+  per_dem = 1 - per_gop , # Calculate Democratic vote share
+  per_point_diff = round(abs(per_gop - per_dem), 2),  # Calculate absolute difference in vote share
+)
 
-# Simulate vote data for all states
-simulated_vote_data <- sapply(1:length(state_names), function(i) simulate_state_votes())
-
-# Convert simulated vote data to a data frame
-simulated_vote_df <- data.frame(t(simulated_vote_data))
-colnames(simulated_vote_df) <- c("votes_gop", "votes_dem", "total_votes", "diff", "per_gop", "per_dem", "per_point_diff")
-simulated_vote_df$state_name <- state_names
-
-# Print simulated vote data
-print(simulated_vote_df)
-
-# Define file path
-file_path <- "outputs/data/simulated_vote_data.csv"
+print(head(simulated_vote_data))
 
 # Write simulated vote data to CSV
-write.csv(simulated_vote_df, file = file_path, row.names = FALSE)
+write.csv(simulated_vote_data, "outputs/data/simulated_vote_data.csv", row.names = FALSE)
 
 # Confirm file creation
-file.exists(file_path)
+file.exists("outputs/data/simulated_vote_data.csv")
 
